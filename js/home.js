@@ -13,13 +13,17 @@ const sortSelect = document.getElementById("sortSelect");
 const resetButton = document.getElementById("resetButton");
 const categoryButtons = document.querySelectorAll("#categoryFilter button");
 const navSearch = document.getElementById("searchInput");
+const productSearch = document.getElementById("productSearch");
 
 if (navSearch) navSearch.value = state.keyword;
+if (productSearch) productSearch.value = state.keyword;
 
 const getVisibleProducts = () => {
   let list = products.filter((item) => {
     const matchCategory = state.category === "Semua" || item.category === state.category;
-    const matchKeyword = item.name.toLowerCase().includes(state.keyword.toLowerCase());
+    const keyword = state.keyword.toLowerCase();
+    const searchableText = `${item.name} ${item.category} ${item.desc || ""}`.toLowerCase();
+    const matchKeyword = !keyword || searchableText.includes(keyword);
     return matchCategory && matchKeyword;
   });
 
@@ -68,8 +72,16 @@ const renderProducts = () => {
 
 window.onSearch = (keyword) => {
   state.keyword = keyword;
+  if (navSearch) navSearch.value = keyword;
+  if (productSearch) productSearch.value = keyword;
   renderProducts();
 };
+
+if (productSearch) {
+  productSearch.addEventListener("input", () => {
+    window.onSearch(productSearch.value.trim());
+  });
+}
 
 sortSelect.addEventListener("change", () => {
   state.sort = sortSelect.value;
@@ -90,6 +102,7 @@ resetButton.addEventListener("click", () => {
   state.category = "Semua";
   state.sort = "default";
   if (navSearch) navSearch.value = "";
+  if (productSearch) productSearch.value = "";
   sortSelect.value = "default";
   categoryButtons.forEach((item) => item.classList.toggle("active", item.dataset.category === "Semua"));
   renderProducts();

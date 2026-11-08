@@ -66,7 +66,7 @@
   <main class="container mb-5 page-fade" id="produk">
     <section class="filter-bar mb-4">
       <div class="row g-3 align-items-center">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
           <div class="d-flex flex-wrap gap-2" id="categoryFilter">
             <button type="button" class="btn btn-sm btn-outline-primary active" data-category="Semua">Semua</button>
             <button type="button" class="btn btn-sm btn-outline-primary" data-category="Fashion">Fashion</button>
@@ -75,7 +75,13 @@
             <button type="button" class="btn btn-sm btn-outline-primary" data-category="Olahraga">Olahraga</button>
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control border-start-0" id="productSearch" placeholder="Cari barang..." aria-label="Cari barang">
+          </div>
+        </div>
+        <div class="col-lg-3">
           <select class="form-select" id="sortSelect" aria-label="Urutkan produk">
             <option value="default">Urutkan: Rekomendasi</option>
             <option value="low">Harga: Terendah</option>
