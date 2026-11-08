@@ -57,11 +57,16 @@ const updateBadge = (animate = true) => {
   const total = cartCount();
   document.querySelectorAll(".cart-badge").forEach((badge) => {
     badge.textContent = total;
+    badge.classList.toggle("d-none", total === 0);
+
     if (animate) {
       badge.classList.remove("badge-bump");
       void badge.offsetWidth;
       badge.classList.add("badge-bump");
     }
+  });
+  document.querySelectorAll(".home-cart-count").forEach((badge) => {
+    badge.textContent = total;
   });
 };
 
