@@ -225,8 +225,9 @@ const renderNavbar = () => {
   target.innerHTML = `
     <nav class="navbar navbar-expand-lg sticky-top app-navbar">
       <div class="container">
-        <a class="navbar-brand fw-bold text-white" href="index.html">
-          <i class="bi bi-bag-heart-fill me-2"></i>TokoKu
+        <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="index.html">
+          <img src="img/logo-navbar.svg" alt="" width="36" height="36" class="me-2">
+          <span class="brand-text">TokoKu</span>
         </a>
         <form class="flex-grow-1 mx-lg-4 my-2 my-lg-0 order-3 order-lg-2" id="searchForm" role="search">
           <div class="input-group">
@@ -279,7 +280,7 @@ const renderFooter = () => {
     <footer class="app-footer text-white py-4 mt-5">
       <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
         <span class="fw-semibold"><i class="bi bi-bag-heart-fill me-2"></i>TokoKu</span>
-        <small>&copy; 2026 TokoKu. Dibuat untuk studi kasus IMK.</small>
+        <small>&copy; 2026 TokoKu.</small>
       </div>
     </footer>`;
 };

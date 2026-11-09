@@ -25,11 +25,11 @@ const renderCart = () => {
       (item) => `
       <div class="card cart-item shadow-sm mb-3">
         <div class="card-body">
-          <div class="row g-3 align-items-center">
-            <div class="col-auto">
+          <div class="row g-3 align-items-center cart-item-layout">
+            <div class="col-auto cart-item-image">
               <img src="${item.image}" alt="${item.name}">
             </div>
-            <div class="col">
+            <div class="col cart-item-info">
               <a class="product-link fw-semibold" href="produk.html?id=${item.id}">${item.name}</a>
               <div class="text-muted small">${item.category}</div>
               <div class="product-price">${formatRupiah(item.price)}</div>
@@ -40,7 +40,7 @@ const renderCart = () => {
                 <span>${item.qty}</span>
                 <button type="button" data-action="plus" data-id="${item.id}" aria-label="Tambah jumlah">+</button>
               </div>
-              <div class="fw-bold text-end" style="min-width: 110px;">${formatRupiah(item.price * item.qty)}</div>
+              <div class="fw-bold text-end cart-item-total">${formatRupiah(item.price * item.qty)}</div>
               <button class="btn btn-outline-danger btn-sm" type="button" data-action="remove" data-id="${item.id}" aria-label="Hapus ${item.name}">
                 <i class="bi bi-trash3"></i>
               </button>
@@ -64,8 +64,8 @@ const renderCart = () => {
   content.innerHTML = `
     <div class="row g-4">
       <div class="col-lg-8">${rows}</div>
-      <div class="col-lg-4">
-        <div class="card border-0 shadow-sm sticky-summary">
+      <div class="col-lg-4 cart-summary-column">
+        <div class="card border-0 shadow-sm sticky-summary cart-summary-card">
           <div class="card-body">
             <h6 class="fw-bold mb-3">Ringkasan Belanja</h6>
             ${voucherInfo}

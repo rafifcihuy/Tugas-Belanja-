@@ -160,9 +160,35 @@ body {
 }
 
 .cart-item {
-  border: 0;
+  border: 1px solid var(--border, #dee2e6);
   border-radius: 0.75rem;
   animation: fadeInUp 0.3s ease both;
+}
+
+.cart-item .card-body {
+  padding: 1rem 1.15rem;
+}
+
+.cart-item-info {
+  min-width: 0;
+}
+
+.cart-item-info .product-link {
+  display: inline-block;
+  overflow-wrap: anywhere;
+}
+
+.cart-item-total {
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+.cart-item-actions {
+  flex-wrap: nowrap;
+}
+
+.cart-summary-card {
+  border: 1px solid var(--border) !important;
 }
 
 .cart-item img {

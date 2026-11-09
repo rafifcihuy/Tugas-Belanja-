@@ -522,6 +522,17 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
   }
 
+  .navbar-brand img {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  }
+
+  @media (max-width: 575.98px) {
+    .brand-text {
+      display: none;
+    }
+  }
+
 
   .app-navbar {
     padding-block: 0.5rem;
@@ -700,18 +711,35 @@ h1, h2, h3, h4, h5, h6 {
   .cart-item-actions {
     display: grid !important;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0.75rem !important;
+    align-items: center;
+    gap: 0.65rem !important;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
   }
 
-  .cart-item-actions > .fw-bold {
+  .cart-item-actions .cart-item-total {
     min-width: 0 !important;
     white-space: nowrap;
     font-size: 0.875rem;
+    justify-self: end;
   }
 
   .cart-item-actions .qty-control button {
     width: 2.4rem;
     height: 2.4rem;
+  }
+
+  .cart-item-actions > .btn {
+    min-width: 2.4rem;
+    padding-inline: 0.55rem;
+  }
+
+  .cart-item .card-body {
+    padding: 0.85rem;
+  }
+
+  .cart-summary-card .card-body {
+    padding: 1rem;
   }
 
   .qty-control button {
@@ -777,3 +805,20 @@ h1, h2, h3, h4, h5, h6 {
 .app-navbar.sticky-top {
   position: relative;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+#footer {
+  margin-top: auto;
+}
+
