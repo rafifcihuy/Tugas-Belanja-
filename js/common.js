@@ -153,7 +153,6 @@ const showToast = (message, type = "success") => {
   new bootstrap.Toast(element, { delay: 2500 }).show();
 };
 
-const renderNavbar = () => {
 const STORAGE_THEME = "tokoku_theme";
 
 const currentTheme = () => document.documentElement.getAttribute("data-bs-theme") || "light";
@@ -275,7 +274,6 @@ const renderNavbar = () => {
 
   syncThemeIcons();
   updateBadge(false);
-};
 };
 
 const renderFooter = () => {

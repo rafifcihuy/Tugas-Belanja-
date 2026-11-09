@@ -53,8 +53,8 @@ const renderProducts = () => {
             </h6>
             <div class="rating-stars mb-2">${renderStars(item.rating)} <small class="text-muted">${item.rating}</small></div>
             <p class="product-price mt-auto mb-3">${formatRupiah(item.price)}</p>
-            <button class="btn btn-primary w-100 add-to-cart" type="button" data-id="${item.id}">
-              <i class="bi bi-cart-plus me-1"></i>Tambah ke Keranjang
+            <button class="btn btn-primary w-100 add-to-cart" type="button" data-id="${item.id}" aria-label="Tambah ${item.name} ke keranjang">
+              <i class="bi bi-cart-plus me-1"></i>Tambah
             </button>
           </div>
         </div>

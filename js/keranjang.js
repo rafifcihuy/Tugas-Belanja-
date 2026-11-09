@@ -34,7 +34,7 @@ const renderCart = () => {
               <div class="text-muted small">${item.category}</div>
               <div class="product-price">${formatRupiah(item.price)}</div>
             </div>
-            <div class="col-12 col-md-auto d-flex align-items-center justify-content-between gap-3">
+            <div class="col-12 col-md-auto d-flex align-items-center justify-content-between gap-3 cart-item-actions">
               <div class="qty-control">
                 <button type="button" data-action="minus" data-id="${item.id}" aria-label="Kurangi jumlah">-</button>
                 <span>${item.qty}</span>

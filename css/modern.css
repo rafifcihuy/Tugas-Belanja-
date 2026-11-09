@@ -164,6 +164,43 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: none;
 }
 
+.product-search-bar .input-group {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--surface);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-search-bar .input-group:focus-within {
+  border-color: var(--brand-main);
+  box-shadow: 0 0 0 0.2rem rgba(12, 131, 119, 0.14);
+}
+
+.product-search-bar .input-group-text,
+.product-search-bar .form-control {
+  border: 0;
+  background-color: transparent !important;
+  color: var(--text);
+}
+
+.product-search-bar .input-group-text {
+  padding-left: 1.1rem;
+  color: var(--brand-main);
+}
+
+.product-search-bar .form-control {
+  min-height: 3.25rem;
+  padding-inline: 0.25rem 1.1rem;
+  box-shadow: none;
+}
+
+.product-search-bar .form-control::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
 .app-navbar .btn-warning {
   background-color: var(--accent);
   border-color: var(--accent);
@@ -557,6 +594,18 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: auto;
   }
 
+  .home-product-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .home-product-toolbar #resultInfo {
+    flex: 1 1 100%;
+  }
+
+  .home-product-toolbar .home-order-actions {
+    width: 100%;
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -592,21 +641,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   body[data-page="home"] section.container > .row {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 0.4rem;
-    scrollbar-width: none;
-  }
-
-  body[data-page="home"] section.container > .row::-webkit-scrollbar {
-    display: none;
+    flex-wrap: wrap;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
   }
 
   body[data-page="home"] section.container > .row > * {
-    flex: 0 0 78%;
-    width: 78%;
-    scroll-snap-align: start;
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: none;
   }
 
   #categoryFilter {
@@ -650,6 +694,23 @@ h1, h2, h3, h4, h5, h6 {
   .add-to-cart {
     font-size: 0.85rem;
     padding-inline: 0.5rem;
+  }
+
+  .cart-item-actions {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.75rem !important;
+  }
+
+  .cart-item-actions > .fw-bold {
+    min-width: 0 !important;
+    white-space: nowrap;
+    font-size: 0.875rem;
+  }
+
+  .cart-item-actions .qty-control button {
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   .qty-control button {
