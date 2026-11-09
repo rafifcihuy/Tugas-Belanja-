@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+  <rect width="600" height="450" fill="#e9edff"/>
+  <circle cx="300" cy="205" r="132" fill="#fff" opacity=".72"/>
+  <text x="300" y="250" text-anchor="middle" font-family="Segoe UI Emoji,Apple Color Emoji,sans-serif" font-size="150">&#x2328;&#xFE0F;</text>
+  <text x="300" y="405" text-anchor="middle" fill="#303c70" font-family="Arial,sans-serif" font-size="24" font-weight="700">Keyboard Mekanik Mini</text>
+</svg>

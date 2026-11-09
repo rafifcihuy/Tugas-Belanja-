@@ -1,11 +1,13 @@
 const params = new URLSearchParams(window.location.search);
 let keyword = (params.get("q") || "").trim();
+let category = "Semua";
 
 const productGrid = document.getElementById("productGrid");
 const emptyState = document.getElementById("emptyState");
 const resultInfo = document.getElementById("resultInfo");
 const resetButton = document.getElementById("resetButton");
 const navSearch = document.getElementById("searchInput");
+const categoryButtons = document.querySelectorAll(".search-category-filter button");
 
 if (navSearch) {
   navSearch.value = keyword;
@@ -14,7 +16,11 @@ if (navSearch) {
 
 const getResults = () => {
   const key = keyword.toLowerCase();
-  return products.filter((item) => item.name.toLowerCase().includes(key) || item.category.toLowerCase().includes(key));
+  return products.filter((item) => {
+    const matchesCategory = category === "Semua" || item.category === category;
+    const matchesKeyword = item.name.toLowerCase().includes(key) || item.category.toLowerCase().includes(key);
+    return matchesCategory && matchesKeyword;
+  });
 };
 
 const render = () => {
@@ -46,9 +52,10 @@ const render = () => {
 
   emptyState.classList.toggle("d-none", list.length !== 0);
 
-  resultInfo.innerHTML = keyword
-    ? `Ditemukan ${list.length} produk untuk "${escapeHTML(keyword)}"`
-    : `Semua produk (${list.length})`;
+  let info = `Menampilkan ${list.length} produk`;
+  if (category !== "Semua") info += ` dalam kategori ${category}`;
+  if (keyword) info += ` untuk "${keyword}"`;
+  resultInfo.textContent = info;
 };
 
 window.onSearch = (value) => {
@@ -58,9 +65,27 @@ window.onSearch = (value) => {
   render();
 };
 
+categoryButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    category = button.dataset.category;
+    categoryButtons.forEach((item) => {
+      const isActive = item === button;
+      item.classList.toggle("active", isActive);
+      item.setAttribute("aria-pressed", String(isActive));
+    });
+    render();
+  });
+});
+
 resetButton.addEventListener("click", () => {
   keyword = "";
+  category = "Semua";
   if (navSearch) navSearch.value = "";
+  categoryButtons.forEach((button) => {
+    const isActive = button.dataset.category === category;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
   history.replaceState(null, "", "cari.html");
   render();
 });

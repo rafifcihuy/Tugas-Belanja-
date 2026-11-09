@@ -601,6 +601,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 767.98px) {
+  body[data-page="cari"] .search-category-filter {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+  }
+
+  body[data-page="cari"] .search-category-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-page="cari"] .search-category-filter .btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  body[data-page="cari"] #productGrid {
+    --bs-gutter-x: 0.75rem;
+    --bs-gutter-y: 0.75rem;
+  }
+
   body[data-page="home"] .home-order-actions {
     justify-content: flex-end;
     margin-left: auto;
@@ -766,6 +788,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 991.98px) {
+  body[data-page="lacak"] .app-navbar #searchForm,
+  body[data-page="keranjang"] .app-navbar #searchForm,
+  body[data-page="akun"] .app-navbar #searchForm {
+    display: none;
+  }
+
   .app-navbar.sticky-top {
     position: sticky;
   }
