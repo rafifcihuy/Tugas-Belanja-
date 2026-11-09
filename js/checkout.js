@@ -12,6 +12,14 @@ if (!items.length) {
   const submitSpinner = document.getElementById("submitSpinner");
   const submitText = document.getElementById("submitText");
 
+  const savedProfile = readJSON("tokoku_profile", null);
+  if (savedProfile) {
+    ["nama", "telepon", "alamat", "kota", "kodepos"].forEach((id) => {
+      const field = document.getElementById(id);
+      if (field && savedProfile[id]) field.value = savedProfile[id];
+    });
+  }
+
   const subtotal = cartSubtotal();
   const discount = cartDiscount();
 

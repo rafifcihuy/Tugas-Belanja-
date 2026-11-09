@@ -183,33 +183,39 @@ const renderBottomNav = () => {
   if (old) old.remove();
 
   const page = document.body.dataset.page;
-  const active =
-    page === "keranjang" || page === "checkout" ? "keranjang" : page === "lacak" ? "lacak" : page === "home" || page === "produk" ? "home" : "";
+  const groups = {
+    home: ["home", "produk"],
+    cari: ["cari"],
+    lacak: ["lacak"],
+    keranjang: ["keranjang", "checkout"],
+    akun: ["akun"]
+  };
+  const isActive = (key) => (groups[key].includes(page) ? "active" : "");
 
   const nav = document.createElement("nav");
   nav.id = "bottomNav";
   nav.className = "bottom-nav";
   nav.setAttribute("aria-label", "Navigasi utama");
   nav.innerHTML = `
-    <a class="bn-item ${active === "home" ? "active" : ""}" href="index.html">
+    <a class="bn-item ${isActive("home")}" href="index.html">
       <i class="bi bi-house-door-fill"></i><span>Beranda</span>
     </a>
-    <button class="bn-item" type="button" id="bnSearch">
+    <a class="bn-item ${isActive("cari")}" href="cari.html">
       <i class="bi bi-search"></i><span>Cari</span>
-    </button>
-    <a class="bn-item ${active === "lacak" ? "active" : ""}" href="lacak.html">
+    </a>
+    <a class="bn-item ${isActive("lacak")}" href="lacak.html">
       <i class="bi bi-truck"></i><span>Lacak</span>
     </a>
-    <a class="bn-item ${active === "keranjang" ? "active" : ""}" href="keranjang.html">
+    <a class="bn-item ${isActive("keranjang")}" href="keranjang.html">
       <span class="bn-icon">
         <i class="bi bi-cart3"></i>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">0</span>
       </span>
       <span>Keranjang</span>
     </a>
-    <button class="bn-item theme-toggle" type="button" aria-label="Ganti tema">
-      <i class="bi bi-moon-stars-fill"></i><span class="theme-label">Gelap</span>
-    </button>`;
+    <a class="bn-item ${isActive("akun")}" href="akun.html">
+      <i class="bi bi-person-circle"></i><span>Akun</span>
+    </a>`;
   document.body.appendChild(nav);
 };
 
@@ -230,9 +236,9 @@ const renderNavbar = () => {
           </div>
         </form>
         <div class="d-none d-lg-flex gap-2 order-2 order-lg-3">
-          <button class="btn btn-outline-light theme-toggle" type="button" aria-label="Ganti tema">
-            <i class="bi bi-moon-stars-fill"></i>
-          </button>
+          <a class="btn btn-outline-light" href="akun.html" aria-label="Akun saya">
+            <i class="bi bi-person-circle"></i><span class="ms-1">Akun</span>
+          </a>
           <a class="btn btn-outline-light" href="lacak.html" aria-label="Lacak pesanan">
             <i class="bi bi-truck"></i><span class="ms-1">Lacak</span>
           </a>
@@ -255,7 +261,7 @@ const renderNavbar = () => {
     if (typeof window.onSearch === "function") {
       window.onSearch(keyword);
     } else {
-      window.location.href = `index.html?q=${encodeURIComponent(keyword)}`;
+      window.location.href = `cari.html?q=${encodeURIComponent(keyword)}`;
     }
   });
 
@@ -263,16 +269,6 @@ const renderNavbar = () => {
     if (typeof window.onSearch === "function") window.onSearch(input.value.trim());
   });
 
-  document.getElementById("bnSearch").addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setTimeout(() => input.focus(), 300);
-  });
-
-  document.querySelectorAll(".theme-toggle").forEach((button) => {
-    button.addEventListener("click", () => applyTheme(currentTheme() === "dark" ? "light" : "dark"));
-  });
-
-  syncThemeIcons();
   updateBadge(false);
 };
 
