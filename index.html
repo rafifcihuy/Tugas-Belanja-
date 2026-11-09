@@ -11,6 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="img/logo-ikon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="css/modern.css" rel="stylesheet">
+  <link href="css/hero.css" rel="stylesheet">
   <script>try{var t=localStorage.getItem("tokoku_theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-bs-theme",t)}catch(e){}</script>
 </head>
 <body data-page="home">
@@ -25,8 +26,56 @@
           <p class="lead mb-4">Temukan produk favorit Anda, tambahkan ke keranjang, lalu checkout dalam beberapa langkah saja. Gunakan kode <strong>HEMAT10</strong> untuk diskon 10%.</p>
           <a href="#produk" class="btn btn-light btn-lg fw-semibold">Mulai Belanja</a>
         </div>
-        <div class="col-lg-5 d-none d-lg-block text-center">
-          <i class="bi bi-basket3-fill hero-icon"></i>
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-glow"></div>
+            <div class="art-ring"></div>
+            <span class="art-orb art-orb-1"></span>
+            <span class="art-orb art-orb-2"></span>
+
+            <div class="art-main">
+              <div class="art-img">
+                <span class="art-tag">Terlaris</span>
+                <span class="art-fav"><i class="bi bi-heart-fill"></i></span>
+                <svg viewBox="0 0 64 64">
+                  <path d="M24 26v-4a8 8 0 0 1 16 0v4" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+                  <path d="M17 26h30l-2.5 22a4 4 0 0 1-4 3.5H23.5a4 4 0 0 1-4-3.5z" fill="#ffffff"/>
+                  <path d="M32 46c-5-3.6-8-6.4-8-9.6a4.4 4.4 0 0 1 8-2.4 4.4 4.4 0 0 1 8 2.4c0 3.2-3 6-8 9.6z" fill="#0c8377"/>
+                </svg>
+              </div>
+              <div class="art-body">
+                <div class="art-name">Tas Ransel Kanvas</div>
+                <div class="art-stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                  <small>4,4</small>
+                </div>
+                <div class="art-row">
+                  <div>
+                    <span class="art-old">Rp221.000</span>
+                    <span class="art-price">Rp199.000</span>
+                  </div>
+                  <span class="art-add"><i class="bi bi-cart-plus"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="art-chip art-chip-1">
+              <i class="bi bi-truck"></i>
+              <div>Gratis Ongkir<small>min. Rp500.000</small></div>
+            </div>
+            <div class="art-chip art-chip-2">
+              <i class="bi bi-star-fill"></i>
+              <div>Rating 4,8<small>dari 2 rb ulasan</small></div>
+            </div>
+            <div class="art-chip art-chip-3">
+              <span class="art-badge">-10%</span>
+              <div>Kode HEMAT10<small>berlaku akhir pekan</small></div>
+            </div>
+            <div class="art-bubble">
+              <i class="bi bi-cart3"></i>
+              <span>3</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

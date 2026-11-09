@@ -1,0 +1,338 @@
+.hero-art {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 380px;
+  margin-left: auto;
+}
+
+.art-ring {
+  position: absolute;
+  top: 25px;
+  left: 50px;
+  width: 340px;
+  height: 340px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  animation: artSpin 60s linear infinite;
+}
+
+.art-glow {
+  position: absolute;
+  top: 55px;
+  left: 70px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.26), transparent 70%);
+  filter: blur(10px);
+}
+
+.art-orb {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.art-orb-1 {
+  top: 24px;
+  right: 74px;
+  width: 22px;
+  height: 22px;
+  background: #ff9f1c;
+  box-shadow: 0 0 24px rgba(255, 159, 28, 0.85);
+  animation: heroFloatChip 5s ease-in-out infinite;
+}
+
+.art-orb-2 {
+  bottom: 60px;
+  left: 74px;
+  width: 14px;
+  height: 14px;
+  background: #7ff0dd;
+  box-shadow: 0 0 18px rgba(127, 240, 221, 0.85);
+  animation: heroFloatChip 6s ease-in-out -2s infinite;
+}
+
+.art-main {
+  position: absolute;
+  top: 24px;
+  left: 100px;
+  width: 240px;
+  padding: 12px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.97);
+  color: #0b3b36;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.4);
+  transform: rotate(-4deg);
+  animation: heroFloatMain 6s ease-in-out infinite;
+}
+
+.art-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffd98a, #ff9f1c);
+  overflow: hidden;
+}
+
+.art-img::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -40px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.art-img svg {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  filter: drop-shadow(0 10px 14px rgba(120, 60, 0, 0.3));
+}
+
+.art-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #0a6359;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.art-fav {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #e5484d;
+  font-size: 0.85rem;
+}
+
+.art-body {
+  padding: 0.8rem 0.35rem 0.2rem;
+}
+
+.art-name {
+  margin-bottom: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.art-stars {
+  color: #f5a524;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+}
+
+.art-stars small {
+  margin-left: 0.3rem;
+  color: #6a8581;
+  letter-spacing: 0;
+}
+
+.art-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+}
+
+.art-old {
+  display: block;
+  color: #8aa09c;
+  font-size: 0.7rem;
+  text-decoration: line-through;
+}
+
+.art-price {
+  color: #0a6359;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.art-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0c8377, #0a6359);
+  color: #ffffff;
+}
+
+.art-chip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.95rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0b3b36;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  animation: heroFloatChip 5s ease-in-out infinite;
+}
+
+.art-chip i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+}
+
+.art-chip small {
+  display: block;
+  color: #6a8581;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.art-chip-1 {
+  top: 78px;
+  right: -4px;
+}
+
+.art-chip-1 i {
+  background: #dcf5f0;
+  color: #0a6359;
+}
+
+.art-chip-2 {
+  bottom: 78px;
+  left: -6px;
+  animation-duration: 6.5s;
+  animation-delay: -1.5s;
+}
+
+.art-chip-2 i {
+  background: #fff1d6;
+  color: #f5a524;
+}
+
+.art-chip-3 {
+  right: 24px;
+  bottom: 18px;
+  animation-duration: 5.5s;
+  animation-delay: -3s;
+}
+
+.art-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff9f1c, #ff7a2f);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.art-bubble {
+  position: absolute;
+  top: 34px;
+  left: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 1.5rem;
+  animation: heroFloatChip 7s ease-in-out -1s infinite;
+}
+
+.art-bubble span {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border: 2px solid #0b4d47;
+  border-radius: 50%;
+  background: #e5484d;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+[data-bs-theme="dark"] .art-main,
+[data-bs-theme="dark"] .art-chip {
+  background: rgba(19, 33, 31, 0.94);
+  color: #e6f2f0;
+}
+
+[data-bs-theme="dark"] .art-price {
+  color: #5eead4;
+}
+
+[data-bs-theme="dark"] .art-chip small,
+[data-bs-theme="dark"] .art-stars small,
+[data-bs-theme="dark"] .art-old {
+  color: #8fa8a5;
+}
+
+[data-bs-theme="dark"] .art-chip-1 i {
+  background: rgba(45, 212, 191, 0.16);
+  color: #5eead4;
+}
+
+[data-bs-theme="dark"] .art-chip-2 i {
+  background: rgba(245, 158, 11, 0.16);
+}
+
+[data-bs-theme="dark"] .art-add {
+  background: linear-gradient(135deg, #2dd4bf, #14b8a6);
+  color: #04211d;
+}
+
+@keyframes heroFloatMain {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-12px) rotate(-4deg); }
+}
+
+@keyframes heroFloatChip {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes artSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1199.98px) {
+  .hero-art {
+    transform: scale(0.86);
+    transform-origin: center right;
+  }
+}
