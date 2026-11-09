@@ -822,3 +822,33 @@ body > main {
   margin-top: auto;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 0.25s ease both fadeOutPage;
+}
+
+::view-transition-new(root) {
+  animation: 0.25s ease both fadeInPage;
+}
+
+@keyframes fadeOutPage {
+  to { opacity: 0; }
+}
+
+@keyframes fadeInPage {
+  from { opacity: 0; }
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  animation: shakeX 0.35s ease;
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

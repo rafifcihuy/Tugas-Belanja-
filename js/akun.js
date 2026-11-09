@@ -3,6 +3,41 @@ syncLastOrder();
 const STORAGE_PROFILE = "tokoku_profile";
 const emptyProfile = { nama: "", email: "", telepon: "", alamat: "", kota: "", kodepos: "" };
 const profileFields = ["nama", "email", "telepon", "kota", "alamat", "kodepos"];
+const profileRules = {
+  nama: {
+    required: true,
+    empty: "Nama lengkap wajib diisi.",
+    chars: /^[\p{L} .'’-]+$/u,
+    charMsg: "Nama hanya boleh berisi huruf, spasi, titik, dan tanda hubung.",
+    check: (value) => (value.length < 3 ? "Nama minimal 3 karakter." : "")
+  },
+  email: {
+    check: (value, field) => (field.validity.typeMismatch ? "Format email belum benar." : "")
+  },
+  telepon: {
+    chars: /^[0-9]+$/,
+    charMsg: "Nomor telepon hanya boleh berisi angka, tanpa spasi atau tanda hubung.",
+    check: (value) => {
+      if (!value) return "";
+      if (!value.startsWith("08")) return "Nomor telepon harus diawali 08.";
+      if (value.length < 10 || value.length > 13) return "Nomor telepon harus 10 sampai 13 digit.";
+      return "";
+    }
+  },
+  kota: {
+    chars: /^[\p{L} .'’-]+$/u,
+    charMsg: "Nama kota hanya boleh berisi huruf.",
+    check: (value) => (value && value.length < 3 ? "Nama kota minimal 3 karakter." : "")
+  },
+  alamat: {
+    check: (value) => (value && value.length < 10 ? "Alamat minimal 10 karakter agar kurir mudah menemukan lokasi." : "")
+  },
+  kodepos: {
+    chars: /^[0-9]+$/,
+    charMsg: "Kode pos hanya boleh berisi angka.",
+    check: (value) => (value && value.length !== 5 ? "Kode pos harus 5 digit angka." : "")
+  }
+};
 
 const getProfile = () => ({ ...emptyProfile, ...readJSON(STORAGE_PROFILE, {}) });
 
@@ -70,13 +105,96 @@ const fillForm = () => {
   });
 };
 
+const touchedFields = new Set();
+
+const getFieldValue = (id) => document.getElementById(id).value.trim();
+
+const validateField = (id) => {
+  const field = document.getElementById(id);
+  const rule = profileRules[id];
+  const value = getFieldValue(id);
+
+  if (!value) return rule.required ? rule.empty : "";
+  if (rule.chars && !rule.chars.test(value)) return rule.charMsg;
+  return rule.check(value, field);
+};
+
+const paintField = (id, message) => {
+  const field = document.getElementById(id);
+  const feedback = field.parentElement.querySelector(".invalid-feedback");
+  field.classList.toggle("is-invalid", Boolean(message));
+  field.classList.toggle("is-valid", !message);
+  field.setAttribute("aria-invalid", message ? "true" : "false");
+  if (message && feedback) feedback.textContent = message;
+};
+
+const resetFieldPaint = (id) => {
+  const field = document.getElementById(id);
+  field.classList.remove("is-invalid", "is-valid");
+  field.removeAttribute("aria-invalid");
+};
+
+const validateAll = () => {
+  let firstInvalid = null;
+
+  profileFields.forEach((id) => {
+    touchedFields.add(id);
+    const message = validateField(id);
+    if (!getFieldValue(id) && !profileRules[id].required) {
+      resetFieldPaint(id);
+      return;
+    }
+    paintField(id, message);
+    if (message && !firstInvalid) firstInvalid = document.getElementById(id);
+  });
+
+  if (firstInvalid) {
+    firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstInvalid.focus({ preventScroll: true });
+  }
+
+  return !firstInvalid;
+};
+
+profileFields.forEach((id) => {
+  const field = document.getElementById(id);
+  if (id === "telepon") field.setAttribute("maxlength", "13");
+  if (id === "kodepos") field.setAttribute("maxlength", "5");
+
+  field.addEventListener("input", () => {
+    const value = getFieldValue(id);
+    const rule = profileRules[id];
+
+    if (!value && !rule.required) {
+      resetFieldPaint(id);
+      return;
+    }
+    if (touchedFields.has(id)) {
+      paintField(id, validateField(id));
+      return;
+    }
+    if (value && rule.chars && !rule.chars.test(value)) {
+      paintField(id, rule.charMsg);
+      return;
+    }
+    if (validateField(id)) resetFieldPaint(id);
+    else paintField(id, "");
+  });
+
+  field.addEventListener("blur", () => {
+    touchedFields.add(id);
+    if (!getFieldValue(id) && !profileRules[id].required) {
+      resetFieldPaint(id);
+      return;
+    }
+    paintField(id, validateField(id));
+  });
+});
+
 profileForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  if (!profileForm.checkValidity()) {
-    profileForm.classList.add("was-validated");
-    const firstInvalid = profileForm.querySelector(":invalid");
-    if (firstInvalid) firstInvalid.focus();
+  if (!validateAll()) {
     showToast("Periksa kembali data yang belum sesuai", "danger");
     return;
   }
@@ -85,9 +203,8 @@ profileForm.addEventListener("submit", (event) => {
   profileFields.forEach((id) => {
     profile[id] = document.getElementById(id).value.trim();
   });
-
   writeJSON(STORAGE_PROFILE, profile);
-  profileForm.classList.remove("was-validated");
+  writeJSON(STORAGE_PROFILE, profile);
   renderHeader();
   showToast("Data akun berhasil disimpan");
 });

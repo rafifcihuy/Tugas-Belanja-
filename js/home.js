@@ -111,8 +111,7 @@ resetButton.addEventListener("click", () => {
 productGrid.addEventListener("click", (event) => {
   const button = event.target.closest(".add-to-cart");
   if (!button) return;
-  const result = addToCart(button.dataset.id, 1);
-  showToast(result.message, result.ok ? "success" : "danger");
+  addToCartWithEffect(button.dataset.id, 1, button);
 });
 
 renderProducts();

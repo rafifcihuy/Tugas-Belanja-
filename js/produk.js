@@ -75,17 +75,13 @@ if (!product) {
   });
 
   document.getElementById("addButton").addEventListener("click", () => {
-    const result = addToCart(product.id, qty);
-    showToast(result.message, result.ok ? "success" : "danger");
+    addToCartWithEffect(product.id, qty, document.getElementById("addButton"));
   });
 
   document.getElementById("buyButton").addEventListener("click", () => {
-    const result = addToCart(product.id, qty);
-    if (result.ok) {
-      window.location.href = "keranjang.html";
-    } else {
-      showToast(result.message, "danger");
-    }
+    addToCartWithEffect(product.id, qty, document.getElementById("buyButton")).then((result) => {
+      if (result.ok) window.location.href = "keranjang.html";
+    });
   });
 
   const related = products.filter((item) => item.category === product.category && item.id !== product.id).slice(0, 4);

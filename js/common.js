@@ -53,20 +53,99 @@ const cartDiscount = () => {
 
 const shippingCost = (type, subtotal) => (type === "reguler" && subtotal >= FREE_SHIPPING_MIN ? 0 : SHIPPING[type]);
 
+let badgeLocked = false;
+
 const updateBadge = (animate = true) => {
+  if (badgeLocked) return;
   const total = cartCount();
   document.querySelectorAll(".cart-badge").forEach((badge) => {
     badge.textContent = total;
-    badge.classList.toggle("d-none", total === 0);
-
     if (animate) {
       badge.classList.remove("badge-bump");
       void badge.offsetWidth;
       badge.classList.add("badge-bump");
     }
   });
-  document.querySelectorAll(".home-cart-count").forEach((badge) => {
-    badge.textContent = total;
+};
+
+const flySourceFor = (trigger) => {
+  const card = trigger ? trigger.closest(".product-card") : null;
+  if (card) return card.querySelector("img");
+  return document.querySelector(".detail-img");
+};
+
+const cartTarget = () => {
+  const candidates = [...document.querySelectorAll(".bottom-nav .bn-icon, .app-navbar a[href='keranjang.html']")];
+  return candidates.find((element) => element.getClientRects().length > 0) || null;
+};
+
+const flyTo = (sourceEl, targetEl, imageSrc, options = {}) => {
+  const { delay = 0, bump = 1.25 } = options;
+
+  if (!sourceEl || !targetEl || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return Promise.resolve();
+  }
+
+  const from = sourceEl.getBoundingClientRect();
+  const to = targetEl.getBoundingClientRect();
+  const width = from.width;
+  const height = from.height;
+  const biggest = Math.max(width, height);
+
+  const startX = from.left;
+  const startY = from.top;
+  const endX = to.left + to.width / 2 - width / 2;
+  const endY = to.top + to.height / 2 - height / 2;
+  const midX = (startX + endX) / 2;
+  const midY = Math.max(16, Math.min(startY, endY) - 60);
+  const endScale = 28 / biggest;
+  const midScale = Math.min(1, Math.max(endScale, 96 / biggest));
+
+  const ghost = document.createElement("img");
+  ghost.src = imageSrc;
+  ghost.alt = "";
+  ghost.setAttribute("aria-hidden", "true");
+  ghost.style.cssText = `position:fixed;left:0;top:0;width:${width}px;height:${height}px;object-fit:cover;border-radius:18px;z-index:2000;pointer-events:none;box-shadow:0 12px 28px rgba(0,0,0,0.35);`;
+  document.body.appendChild(ghost);
+
+  const animation = ghost.animate(
+    [
+      { transform: `translate(${startX}px, ${startY}px) scale(1)`, opacity: 1, offset: 0 },
+      { transform: `translate(${midX}px, ${midY}px) scale(${midScale})`, opacity: 1, offset: 0.55 },
+      { transform: `translate(${endX}px, ${endY}px) scale(${endScale})`, opacity: 0.35, offset: 1 }
+    ],
+    { duration: 800, delay, easing: "cubic-bezier(0.45, 0, 0.55, 1)", fill: "both" }
+  );
+
+  return animation.finished
+    .then(() => {
+      ghost.remove();
+      targetEl.animate(
+        [{ transform: "scale(1)" }, { transform: `scale(${bump})` }, { transform: "scale(1)" }],
+        { duration: 320, easing: "ease-out" }
+      );
+    })
+    .catch(() => ghost.remove());
+};
+
+const addToCartWithEffect = (id, qty, trigger) => {
+  const image = flySourceFor(trigger);
+
+  badgeLocked = true;
+  const result = addToCart(id, qty);
+
+  if (!result.ok) {
+    badgeLocked = false;
+    updateBadge(false);
+    showToast(result.message, "danger");
+    return Promise.resolve(result);
+  }
+
+  return flyTo(image, cartTarget(), image ? image.src : "").then(() => {
+    badgeLocked = false;
+    updateBadge(true);
+    showToast(result.message);
+    return result;
   });
 };
 
