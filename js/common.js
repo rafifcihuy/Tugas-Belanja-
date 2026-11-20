@@ -299,6 +299,13 @@ const renderBottomNav = () => {
 };
 
 const renderNavbar = () => {
+  const page = document.body.dataset.page;
+
+  if (page === "lacak") {
+    renderBottomNav();
+    return;
+  }
+
   const target = document.getElementById("navbar");
   if (!target) return;
   target.innerHTML = `
