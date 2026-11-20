@@ -24,11 +24,7 @@ const profileRules = {
       return "";
     }
   },
-  kota: {
-    chars: /^[\p{L} .'’-]+$/u,
-    charMsg: "Nama kota hanya boleh berisi huruf.",
-    check: (value) => (value && value.length < 3 ? "Nama kota minimal 3 karakter." : "")
-  },
+  kota: { check: () => "" },
   alamat: {
     check: (value) => (value && value.length < 10 ? "Alamat minimal 10 karakter agar kurir mudah menemukan lokasi." : "")
   },
@@ -82,9 +78,11 @@ const renderRecent = () => {
 
   recentOrders.innerHTML = orders
     .map((order) => {
-      const stage = TRACK_STAGES[currentStageIndex(order)].title;
+      const stageIndex = currentStageIndex(order);
+      const finished = stageIndex === TRACK_STAGES.length - 1;
+      const stage = TRACK_STAGES[stageIndex].title;
       return `
-        <a class="recent-order" href="lacak.html?id=${order.id}">
+        <a class="recent-order ${finished ? "sudah" : "belum"}" href="lacak.html?id=${order.id}">
           <div>
             <div class="fw-semibold">${order.id}</div>
             <small class="text-muted">${stage}</small>
@@ -161,7 +159,8 @@ profileFields.forEach((id) => {
   if (id === "telepon") field.setAttribute("maxlength", "13");
   if (id === "kodepos") field.setAttribute("maxlength", "5");
 
-  field.addEventListener("input", () => {
+  const validateOnChange = id === "kota" ? "change" : "input";
+  field.addEventListener(validateOnChange, () => {
     const value = getFieldValue(id);
     const rule = profileRules[id];
 

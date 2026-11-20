@@ -87,10 +87,8 @@ if (!items.length) {
       check: (value) => (value.length < 10 ? "Alamat minimal 10 karakter agar kurir mudah menemukan lokasi." : "")
     },
     kota: {
-      empty: "Kota wajib diisi.",
-      chars: /^[\p{L} .'’-]+$/u,
-      charMsg: "Nama kota hanya boleh berisi huruf.",
-      check: (value) => (value.length < 3 ? "Nama kota minimal 3 karakter." : "")
+      empty: "Silakan pilih kota.",
+      check: () => ""
     },
     kodepos: {
       empty: "Kode pos wajib diisi.",
@@ -190,7 +188,7 @@ if (!items.length) {
       return;
     }
 
-    field.addEventListener("input", () => onInput(id));
+    field.addEventListener(id === "kota" ? "change" : "input", () => onInput(id));
     field.addEventListener("blur", () => {
       touched.add(id);
       paint(id, validate(id));

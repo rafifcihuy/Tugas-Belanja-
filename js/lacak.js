@@ -141,7 +141,7 @@ const render = () => {
     orderList.innerHTML = "";
     trackDetail.innerHTML = `
       <div class="text-center py-5">
-        <i class="bi bi-box-seam display-1 text-muted"></i>
+        <img class="empty-state-image" src="img/5.png" alt="Ilustrasi belum ada pesanan">
         <h5 class="mt-3">Belum ada pesanan</h5>
         <p class="text-muted">Pesanan yang sudah Anda checkout akan muncul di sini.</p>
         <a href="index.html" class="btn btn-primary">Mulai Belanja</a>

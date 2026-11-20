@@ -64,6 +64,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius);
 }
 
+.empty-state-image {
+  display: block;
+  width: min(100%, 180px);
+  height: auto;
+  margin: 0 auto;
+}
+
 .btn {
   border-radius: 999px;
   font-weight: 600;
@@ -267,6 +274,15 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.2s ease;
 }
 
+.benefit-slide {
+  display: flex;
+}
+
+.benefit-box {
+  width: 100%;
+  height: 100%;
+}
+
 .feature-box:hover {
   transform: translateY(-3px);
 }
@@ -380,6 +396,31 @@ h1, h2, h3, h4, h5, h6 {
   left: 16.67%;
   right: 16.67%;
   background-color: var(--step-off);
+}
+
+#steps {
+  position: sticky;
+  top: 4.5rem;
+  z-index: 1020;
+  background-color: var(--bg);
+  padding-block: 0.55rem 0.65rem;
+}
+
+#steps .step-list {
+  margin-bottom: 0.5rem;
+}
+
+#steps .step-list::before {
+  top: 1.2rem;
+}
+
+#steps .step-dot {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+body[data-page="keranjang"] #steps {
+  top: 0;
 }
 
 .step-item {
@@ -687,6 +728,24 @@ h1, h2, h3, h4, h5, h6 {
     scroll-snap-align: none;
   }
 
+  body[data-page="home"] section.container > .benefit-slider {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.3rem;
+    scrollbar-width: none;
+  }
+
+  body[data-page="home"] section.container > .benefit-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-page="home"] section.container > .benefit-slider > .benefit-slide {
+    flex: 0 0 86%;
+    width: 86%;
+    scroll-snap-align: start;
+  }
+
   #categoryFilter {
     flex-wrap: nowrap !important;
     overflow-x: auto;
@@ -779,7 +838,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .step-item {
-    font-size: 0.7rem;
+    font-size: 0.78rem;
   }
 
   .app-footer small {

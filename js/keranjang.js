@@ -7,7 +7,7 @@ const renderCart = () => {
   if (!items.length) {
     content.innerHTML = `
       <div class="text-center py-5">
-        <i class="bi bi-cart-x display-1 text-muted"></i>
+        <img class="empty-state-image" src="img/3.png" alt="Ilustrasi keranjang belanja kosong">
         <h5 class="mt-3">Keranjang Anda masih kosong</h5>
         <p class="text-muted">Yuk, pilih produk favorit Anda terlebih dahulu.</p>
         <a href="index.html" class="btn btn-primary">Mulai Belanja</a>

@@ -301,7 +301,7 @@ const renderBottomNav = () => {
 const renderNavbar = () => {
   const page = document.body.dataset.page;
 
-  if (page === "lacak") {
+  if (["lacak", "keranjang", "akun"].includes(page)) {
     renderBottomNav();
     return;
   }
@@ -359,17 +359,17 @@ const renderNavbar = () => {
   updateBadge(false);
 };
 
-const renderFooter = () => {
-  const target = document.getElementById("footer");
-  if (!target) return;
-  target.innerHTML = `
-    <footer class="app-footer text-white py-4 mt-5">
-      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-        <span class="fw-semibold"><i class="bi bi-bag-heart-fill me-2"></i>TokoKu</span>
-        <small>&copy; 2026 TokoKu.</small>
-      </div>
-    </footer>`;
-};
+// const renderFooter = () => {
+//   const target = document.getElementById("footer");
+//   if (!target) return;
+//   target.innerHTML = `
+//     <footer class="app-footer text-white py-4 mt-5">
+//       <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+//         <span class="fw-semibold"><i class="bi bi-bag-heart-fill me-2"></i>TokoKu</span>
+//         <small>&copy; 2026 TokoKu.</small>
+//       </div>
+//     </footer>`;
+// };
 
 renderNavbar();
 renderFooter();

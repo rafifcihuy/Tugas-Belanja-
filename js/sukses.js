@@ -56,7 +56,7 @@ if (!order) {
     </div>
 
     <div class="text-center mt-4">
-            <a href="lacak.html?id=${order.id}" class="btn btn-primary btn-lg me-2"><i class="bi bi-truck me-1"></i>Lacak Pesanan</a>
+            <a href="lacak.html?id=${order.id}" class="btn btn-primary btn-lg me-2"><i class="bi bi-truck me-1"></i>Lacak Pesanan</a><br class="d-lg-none mb-2">
       <a href="index.html" class="btn btn-outline-primary btn-lg">Kembali Belanja</a>
     </div>`;
 }
