@@ -1,5 +1,9 @@
 const content = document.getElementById("cartContent");
 document.getElementById("steps").innerHTML = renderSteps(1);
+const removeItemModal = new bootstrap.Modal(document.getElementById("removeItemModal"));
+const removeItemModalMessage = document.getElementById("removeItemModalMessage");
+const confirmRemoveItemButton = document.getElementById("confirmRemoveItem");
+let pendingRemoveId = null;
 
 const renderCart = () => {
   const items = cartDetails();
@@ -117,8 +121,11 @@ content.addEventListener("click", (event) => {
   }
 
   if (action === "remove") {
-    removeItem(id);
-    showToast("Produk dihapus dari keranjang");
+    if (!entry) return;
+    pendingRemoveId = id;
+    removeItemModalMessage.textContent = `Yakin ingin menghapus ${findProduct(id).name} dari keranjang?`;
+    removeItemModal.show();
+    return;
   }
 
   if (action === "removeVoucher") {
@@ -127,6 +134,18 @@ content.addEventListener("click", (event) => {
   }
 
   renderCart();
+});
+
+confirmRemoveItemButton.addEventListener("click", () => {
+  if (pendingRemoveId === null) return;
+  removeItem(pendingRemoveId);
+  pendingRemoveId = null;
+  removeItemModal.hide();
+  renderCart();
+});
+
+document.getElementById("removeItemModal").addEventListener("hidden.bs.modal", () => {
+  pendingRemoveId = null;
 });
 
 content.addEventListener("submit", (event) => {

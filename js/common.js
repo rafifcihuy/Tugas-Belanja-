@@ -144,7 +144,11 @@ const addToCartWithEffect = (id, qty, trigger) => {
   return flyTo(image, cartTarget(), image ? image.src : "").then(() => {
     badgeLocked = false;
     updateBadge(true);
-    showToast(result.message);
+    if (trigger && trigger.matches(".add-to-cart, #addButton")) {
+      showAddedToCartConfirmation();
+    } else {
+      showToast(result.message);
+    }
     return result;
   });
 };
@@ -170,6 +174,40 @@ const addToCart = (id, qty = 1) => {
   }
   saveCart(cart);
   return { ok: true, message: `${product.name} berhasil ditambahkan ke keranjang` };
+};
+
+let cartAddedModal;
+let cartAddedModalTimer;
+
+const showAddedToCartConfirmation = () => {
+  if (!cartAddedModal) {
+    const modalElement = document.createElement("div");
+    modalElement.className = "modal fade cart-added-modal";
+    modalElement.tabIndex = -1;
+    modalElement.setAttribute("aria-labelledby", "cartAddedModalLabel");
+    modalElement.setAttribute("aria-hidden", "true");
+    modalElement.innerHTML = `
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content text-center">
+          <div class="modal-body py-4">
+            <div class="cart-added-check" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
+            <h5 class="fw-bold mt-3 mb-0" id="cartAddedModalLabel">Produk dimasukkan ke keranjang</h5>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(modalElement);
+    cartAddedModal = new bootstrap.Modal(modalElement);
+    modalElement.addEventListener("show.bs.modal", () => {
+      document.body.classList.add("cart-added-notice-active");
+    });
+    modalElement.addEventListener("hidden.bs.modal", () => {
+      document.body.classList.remove("cart-added-notice-active");
+    });
+  }
+
+  cartAddedModal.show();
+  clearTimeout(cartAddedModalTimer);
+  cartAddedModalTimer = setTimeout(() => cartAddedModal.hide(), 1000);
 };
 
 const setQty = (id, qty) => {
@@ -301,7 +339,7 @@ const renderBottomNav = () => {
 const renderNavbar = () => {
   const page = document.body.dataset.page;
 
-  if (["lacak", "keranjang", "akun"].includes(page)) {
+  if (["lacak", "keranjang", "akun", "checkout", "sukses"].includes(page)) {
     renderBottomNav();
     return;
   }

@@ -1,6 +1,78 @@
 const successContent = document.getElementById("successContent");
 const order = readJSON(STORAGE_ORDER, null);
 
+const playConfetti = () => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  canvas.className = "confetti-canvas";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(canvas);
+
+  const colors = ["#0c8377", "#2dd4bf", "#ff9f1c", "#f472b6", "#facc15"];
+  const particles = Array.from({ length: 120 }, () => {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 4 + Math.random() * 7;
+    return {
+      x: window.innerWidth / 2,
+      y: window.innerHeight * 0.3,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 3,
+      size: 5 + Math.random() * 6,
+      rotation: Math.random() * Math.PI,
+      spin: (Math.random() - 0.5) * 0.2,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    };
+  });
+
+  let width = 0;
+  let height = 0;
+  const resizeCanvas = () => {
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  };
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  const startedAt = performance.now();
+  const duration = 5000;
+  const animate = (now) => {
+    context.clearRect(0, 0, width, height);
+
+    particles.forEach((particle) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      particle.vy += 0.06;
+      particle.vx *= 0.995;
+      particle.rotation += particle.spin;
+
+      context.save();
+      context.translate(particle.x, particle.y);
+      context.rotate(particle.rotation);
+      context.fillStyle = particle.color;
+      context.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size * 0.65);
+      context.restore();
+    });
+
+    if (now - startedAt < duration) {
+      requestAnimationFrame(animate);
+      return;
+    }
+
+    window.removeEventListener("resize", resizeCanvas);
+    canvas.remove();
+  };
+
+  requestAnimationFrame(animate);
+};
+
 if (!order) {
   window.location.replace("index.html");
 } else {
@@ -59,4 +131,6 @@ if (!order) {
             <a href="lacak.html?id=${order.id}" class="btn btn-primary btn-lg me-2"><i class="bi bi-truck me-1"></i>Lacak Pesanan</a><br class="d-lg-none mb-2">
       <a href="index.html" class="btn btn-outline-primary btn-lg">Kembali Belanja</a>
     </div>`;
+
+  playConfetti();
 }

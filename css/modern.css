@@ -71,6 +71,15 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto;
 }
 
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .btn {
   border-radius: 999px;
   font-weight: 600;
@@ -104,6 +113,29 @@ h1, h2, h3, h4, h5, h6 {
 .add-to-cart:hover {
   filter: brightness(1.08);
   box-shadow: 0 8px 18px rgba(10, 99, 89, 0.25);
+}
+
+.cart-added-modal .modal-content {
+  border: 0;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--surface) 84%, transparent);
+  color: var(--text);
+}
+
+.cart-added-notice-active .modal-backdrop.show {
+  opacity: 0.12;
+}
+
+.cart-added-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: rgba(25, 135, 84, 0.16);
+  color: #198754;
+  font-size: 2rem;
 }
 
 .btn-link {
@@ -421,6 +453,16 @@ h1, h2, h3, h4, h5, h6 {
 
 body[data-page="keranjang"] #steps {
   top: 0;
+}
+
+body[data-page="checkout"] #steps,
+body[data-page="sukses"] #steps {
+  top: 0;
+}
+
+body[data-page="checkout"] > main,
+body[data-page="sukses"] > main {
+  margin-top: 0 !important;
 }
 
 .step-item {
