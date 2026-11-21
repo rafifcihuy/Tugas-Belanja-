@@ -236,7 +236,6 @@ themeRadios.forEach((radio) => {
   radio.checked = radio.value === readSavedTheme();
   radio.addEventListener("change", () => {
     setTheme(radio.value);
-    showToast("Tampilan diperbarui");
   });
 });
 

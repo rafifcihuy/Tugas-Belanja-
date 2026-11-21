@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk - TokoKu</title>
+  <meta name="theme-color" content="#0c8377">
+  <link rel="icon" type="image/svg+xml" href="img/logo-ikon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/login.css" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("tokoku_theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-bs-theme",t)}catch(e){}</script>
+</head>
+<body data-page="login">
+  <main class="login">
+    <section class="login-panel" aria-hidden="true">
+      <a class="login-logo" href="index.html" tabindex="-1">
+        <svg viewBox="0 0 64 64" width="38" height="38"><rect width="64" height="64" rx="16" fill="#fff"/><path d="M24 26v-4a8 8 0 0 1 16 0v4" fill="none" stroke="#0a6359" stroke-width="3.5" stroke-linecap="round"/><path d="M17 26h30l-2.5 22a4 4 0 0 1-4 3.5H23.5a4 4 0 0 1-4-3.5z" fill="#0a6359"/><path d="M32 46c-5-3.6-8-6.4-8-9.6a4.4 4.4 0 0 1 8-2.4 4.4 4.4 0 0 1 8 2.4c0 3.2-3 6-8 9.6z" fill="#ff9f1c"/></svg>
+        <span>TokoKu</span>
+      </a>
+      <div class="panel-ring"></div>
+      <img class="char char-desktop" src="img/4.png" alt="">
+      <img class="char char-mobile" src="img/2.png" alt="">
+      <div class="bubble">Masuk di sini ya~</div>
+      <div class="chip chip-ongkir">
+        <span class="chip-icon"><i class="bi bi-truck"></i></span>
+        <div>Gratis Ongkir<small>min. Rp500.000</small></div>
+      </div>
+      <div class="chip chip-promo">
+        <span class="chip-icon chip-icon-orange">-10%</span>
+        <div>Kode HEMAT10<small>khusus member</small></div>
+      </div>
+      <div class="panel-copy">
+        <h2>Belanja seru, tinggal login~</h2>
+        <p>Keranjang, pesanan, dan alamat kamu tersimpan rapi di satu akun.</p>
+      </div>
+    </section>
+
+    <section class="login-form">
+      <div class="sheet-grab"></div>
+      <div class="form-wrap">
+        <h1 id="judul">Hai, selamat datang kembali~</h1>
+        <p class="sub" id="subjudul">Masuk dulu ya, biar belanjaanmu nggak ketinggalan.</p>
+
+        <div class="alert-box" id="alertBox" role="alert" hidden></div>
+
+        <form id="loginForm" novalidate>
+          <div class="field-group" id="grupNama" hidden>
+            <label class="field" for="nama">
+              <i class="bi bi-person"></i>
+              <input type="text" id="nama" name="nama" placeholder="Nama lengkap" autocomplete="name">
+            </label>
+            <div class="field-error" data-for="nama"></div>
+          </div>
+
+          <div class="field-group">
+            <label class="field" for="email">
+              <i class="bi bi-envelope"></i>
+              <input type="email" id="email" name="email" placeholder="nama@email.com" autocomplete="email" inputmode="email">
+            </label>
+            <div class="field-error" data-for="email"></div>
+          </div>
+
+          <div class="field-group">
+            <label class="field" for="sandi">
+              <i class="bi bi-lock"></i>
+              <input type="password" id="sandi" name="sandi" placeholder="Kata sandi" autocomplete="current-password">
+              <button type="button" class="eye" id="toggleSandi" aria-label="Tampilkan kata sandi"><i class="bi bi-eye"></i></button>
+            </label>
+            <div class="field-error" data-for="sandi"></div>
+          </div>
+
+          <div class="row-opsi" id="barisOpsi">
+            <label class="cek">
+              <input type="checkbox" id="ingat" checked>
+              <span class="kotak"><i class="bi bi-check"></i></span>
+              Ingat aku
+            </label>
+            <button type="button" class="link-btn" id="lupaSandi">Lupa kata sandi?</button>
+          </div>
+
+          <button type="submit" class="btn-main" id="tombolKirim">
+            <span id="teksKirim">Masuk</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="atau"><span>atau</span></div>
+
+        <button type="button" class="btn-ghost" id="tombolGoogle">
+          <i class="bi bi-google"></i>Lanjut dengan Google
+        </button>
+
+        <p class="foot"><span id="teksGanti">Belum punya akun?</span> <button type="button" class="link-btn link-orange" id="tombolGanti">Daftar yuk</button></p>
+        <a class="kembali" href="index.html"><i class="bi bi-arrow-left"></i>Kembali ke toko</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

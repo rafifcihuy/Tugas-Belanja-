@@ -142,7 +142,7 @@ const render = () => {
     trackDetail.innerHTML = `
       <div class="text-center py-5">
         <img class="empty-state-image" src="img/5.png" alt="Ilustrasi belum ada pesanan">
-        <h5 class="mt-3">Belum ada pesanan</h5>
+        <h5 class="mt-3">kotaknya masih kosong</h5>
         <p class="text-muted">Pesanan yang sudah Anda checkout akan muncul di sini.</p>
         <a href="index.html" class="btn btn-primary">Mulai Belanja</a>
       </div>`;
@@ -166,7 +166,6 @@ document.addEventListener("click", (event) => {
 
   if (action === "skip") {
     skipStage(id);
-    showToast("Status pesanan diperbarui");
   }
 
   if (action === "reset") {
