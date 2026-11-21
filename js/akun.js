@@ -21,9 +21,47 @@ accountContent.hidden = !session;
 syncLastOrder();
 
 const STORAGE_PROFILE = "tokoku_profile";
+const STORAGE_USERS = "tokoku_users";
 const STORAGE_PROFILE_COMPLETE_DISMISSED = "tokoku_profile_complete_dismissed";
 const emptyProfile = { nama: "", email: "", telepon: "", alamat: "", kota: "", kodepos: "" };
 const profileFields = ["nama", "email", "telepon", "kota", "alamat", "kodepos"];
+const passwordFields = ["passwordCurrent", "passwordNew", "passwordConfirm"];
+const passwordToggles = Array.from(document.querySelectorAll("[data-password-toggle]"), (toggle) => {
+  const field = document.getElementById(toggle.dataset.passwordToggle);
+  const showLabel = toggle.getAttribute("aria-label");
+  const hideLabel = showLabel.replace(/^Tampilkan /, "Sembunyikan ");
+
+  toggle.addEventListener("click", () => {
+    const show = field.type === "password";
+    field.type = show ? "text" : "password";
+    toggle.firstElementChild.className = show ? "bi bi-eye-slash" : "bi bi-eye";
+    toggle.setAttribute("aria-label", show ? hideLabel : showLabel);
+    toggle.setAttribute("aria-pressed", String(show));
+  });
+
+  return { field, toggle, showLabel };
+});
+const resetPasswordInputs = () => {
+  passwordToggles.forEach(({ field, toggle, showLabel }) => {
+    field.value = "";
+    field.type = "password";
+    toggle.firstElementChild.className = "bi bi-eye";
+    toggle.setAttribute("aria-label", showLabel);
+    toggle.setAttribute("aria-pressed", "false");
+  });
+};
+
+const hashSandi = async (text) => {
+  if (window.crypto && window.crypto.subtle) {
+    const data = new TextEncoder().encode(text);
+    const buffer = await window.crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(buffer))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+  }
+  return btoa(unescape(encodeURIComponent(text)));
+};
+
 const profileRules = {
   nama: {
     required: true,
@@ -84,6 +122,77 @@ const akunHeader = document.getElementById("akunHeader");
 const recentOrders = document.getElementById("recentOrders");
 const profileForm = document.getElementById("profileForm");
 const profileComplete = document.getElementById("profileComplete");
+const accountSecuritySettings = document.getElementById("accountSecuritySettings");
+let accountUpdateModal = null;
+let accountUpdateModalTimer = null;
+let accountSettingsOpen = false;
+
+const hideAccountUpdateConfirmation = () => {
+  if (accountUpdateModalTimer !== null) {
+    window.clearTimeout(accountUpdateModalTimer);
+    accountUpdateModalTimer = null;
+  }
+  if (accountUpdateModal) accountUpdateModal.hide();
+};
+
+const showAccountUpdateConfirmation = () => {
+  if (!accountUpdateModal) {
+    const modalElement = document.createElement("div");
+    modalElement.className = "modal fade cart-added-modal";
+    modalElement.tabIndex = -1;
+    modalElement.setAttribute("aria-labelledby", "accountUpdateModalLabel");
+    modalElement.setAttribute("aria-hidden", "true");
+    modalElement.innerHTML = `
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content text-center">
+          <div class="modal-body py-4">
+            <div class="cart-added-check" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
+            <h5 class="fw-bolder mt-3 mb-0" id="accountUpdateModalLabel">Data sudah diperbarui!</h5>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(modalElement);
+    accountUpdateModal = new bootstrap.Modal(modalElement);
+    modalElement.addEventListener("show.bs.modal", () => {
+      document.body.classList.add("cart-added-notice-active");
+    });
+    modalElement.addEventListener("hidden.bs.modal", () => {
+      document.body.classList.remove("cart-added-notice-active");
+    });
+  }
+
+  if (accountUpdateModalTimer !== null) window.clearTimeout(accountUpdateModalTimer);
+  accountUpdateModal.show();
+  accountUpdateModalTimer = window.setTimeout(() => {
+    accountUpdateModal.hide();
+    accountUpdateModalTimer = null;
+  }, 1500);
+};
+
+akunHeader.addEventListener("click", (event) => {
+  const settingsButton = event.target.closest("#editAccountSettings");
+  if (!settingsButton) return;
+  hideAccountUpdateConfirmation();
+
+  if (accountSettingsOpen) {
+    accountSettingsOpen = false;
+    settingsButton.setAttribute("aria-expanded", "false");
+    profileForm.hidden = true;
+    accountSecuritySettings.hidden = true;
+    resetPasswordInputs();
+    const profile = getProfile();
+    const isComplete = profileFields.every((id) => Boolean(String(profile[id] || "").trim()));
+    profileComplete.hidden = !isComplete || readJSON(STORAGE_PROFILE_COMPLETE_DISMISSED, false) === true;
+    return;
+  }
+
+  accountSettingsOpen = true;
+  settingsButton.setAttribute("aria-expanded", "true");
+  accountSecuritySettings.hidden = false;
+  profileForm.hidden = false;
+  profileComplete.hidden = true;
+  profileForm.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 const initialOf = (name) => (name.trim() ? name.trim().charAt(0).toUpperCase() : "T");
 
@@ -96,9 +205,12 @@ const renderHeader = () => {
     <div class="d-flex align-items-center gap-3">
       <div class="avatar">${escapeHTML(initialOf(profile.nama))}</div>
       <div class="flex-grow-1">
-        <h5 class="fw-bold mb-0">${escapeHTML(profile.nama || "Pengguna TokoKu")}</h5>
+        <h5 class="fw-bold mb-0">${escapeHTML(profile.nama || "Pengguna Nekoyo")}</h5>
         <small class="text-muted">${escapeHTML(profile.email || "Lengkapi data diri Anda di bawah")}</small>
       </div>
+      <button type="button" class="btn btn-outline-primary btn-sm flex-shrink-0" id="editAccountSettings" aria-label="Pengaturan akun" aria-controls="profileForm" aria-expanded="false">
+        <i class="bi bi-gear-fill"></i><span class="d-none d-sm-inline ms-1">Pengaturan</span>
+      </button>
     </div>
     <div class="row g-2 g-md-3 mt-2 text-center">
       <div class="col-4"><div class="stat-box"><div class="stat-value">${orders.length}</div><small>Pesanan</small></div></div>
@@ -236,8 +348,9 @@ profileFields.forEach((id) => {
   });
 });
 
-profileForm.addEventListener("submit", (event) => {
+profileForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const isSettingsUpdate = accountSettingsOpen;
 
   if (!validateAll()) {
     showToast("Periksa kembali data yang belum sesuai", "danger");
@@ -248,11 +361,85 @@ profileForm.addEventListener("submit", (event) => {
   profileFields.forEach((id) => {
     profile[id] = document.getElementById(id).value.trim();
   });
-  writeJSON(STORAGE_PROFILE, profile);
+  profile.email = profile.email.toLowerCase();
+
+  const users = readJSON(STORAGE_USERS, []);
+  const userList = Array.isArray(users) ? users : [];
+  const userIndex = userList.findIndex((user) => user && user.email === session.email);
+  if (userIndex === -1) {
+    showToast("Data akun tidak ditemukan. Silakan masuk kembali.", "danger");
+    return;
+  }
+  if (userList.some((user, index) =>
+    index !== userIndex && user && typeof user.email === "string" && user.email.toLowerCase() === profile.email
+  )) {
+    paintField("email", "Email ini sudah digunakan oleh akun lain.");
+    showToast("Gunakan email yang belum terdaftar.", "danger");
+    return;
+  }
+
+  const passwordValues = passwordFields.map((id) => document.getElementById(id).value);
+  const changingPassword = passwordValues.some(Boolean);
+  let newPasswordHash = "";
+
+  if (changingPassword) {
+    const emptyPasswordIndex = passwordValues.findIndex((value) => !value);
+    if (emptyPasswordIndex !== -1) {
+      showToast("Isi kata sandi saat ini, kata sandi baru, dan konfirmasinya.", "danger");
+      document.getElementById(passwordFields[emptyPasswordIndex]).focus();
+      return;
+    }
+
+    const [currentPassword, newPassword, confirmPassword] = passwordValues;
+    if (newPassword.length < 8 || !/[A-Za-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      showToast("Kata sandi baru harus minimal 8 karakter dan mengandung huruf serta angka.", "danger");
+      document.getElementById("passwordNew").focus();
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      showToast("Konfirmasi kata sandi baru belum cocok.", "danger");
+      document.getElementById("passwordConfirm").focus();
+      return;
+    }
+
+    try {
+      const currentPasswordHash = await hashSandi(currentPassword);
+      if (currentPasswordHash !== userList[userIndex].sandi) {
+        showToast("Kata sandi saat ini salah.", "danger");
+        document.getElementById("passwordCurrent").focus();
+        return;
+      }
+      newPasswordHash = await hashSandi(newPassword);
+    } catch (error) {
+      showToast("Kata sandi tidak dapat diproses. Silakan coba lagi.", "danger");
+      return;
+    }
+  }
+
+  const updatedUser = { ...userList[userIndex], nama: profile.nama, email: profile.email };
+  if (changingPassword) updatedUser.sandi = newPasswordHash;
+  userList[userIndex] = updatedUser;
+  const updatedSession = { ...session, nama: profile.nama, email: profile.email };
+
+  try {
+    localStorage.setItem(STORAGE_USERS, JSON.stringify(userList));
+    localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile));
+    const sessionStorageTarget = localStorage.getItem(STORAGE_SESSION) ? localStorage : sessionStorage;
+    sessionStorageTarget.setItem(STORAGE_SESSION, JSON.stringify(updatedSession));
+  } catch (error) {
+    showToast("Pengaturan akun tidak dapat disimpan. Silakan coba lagi.", "danger");
+    return;
+  }
+
+  Object.assign(session, updatedSession);
+  resetPasswordInputs();
+  accountSettingsOpen = false;
   renderHeader();
+  accountSecuritySettings.hidden = true;
   profileForm.hidden = true;
-  localStorage.removeItem(STORAGE_PROFILE_COMPLETE_DISMISSED);
-  profileComplete.hidden = false;
+  if (isSettingsUpdate) showAccountUpdateConfirmation();
+  else hideAccountUpdateConfirmation();
+  profileComplete.hidden = isSettingsUpdate || readJSON(STORAGE_PROFILE_COMPLETE_DISMISSED, false) === true;
 });
 
 document.getElementById("startShopping").addEventListener("click", () => {

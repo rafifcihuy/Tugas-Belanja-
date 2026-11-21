@@ -156,7 +156,7 @@ const setMode = (next) => {
   characterDesktop.src = text.imageDesktop;
   characterMobile.src = text.imageMobile;
   inputs.sandi.setAttribute("autocomplete", text.autocomplete);
-  document.title = next === "daftar" ? "Daftar - TokoKu" : "Masuk - TokoKu";
+  document.title = next === "daftar" ? "Daftar - Nekoyo" : "Masuk - Nekoyo";
   Object.keys(inputs).forEach((name) => {
     fieldBox(name).classList.remove("invalid", "valid");
     errorBox(name).textContent = "";
@@ -225,6 +225,11 @@ const handleDaftar = async () => {
   await finish("Yeay, akun berhasil dibuat! Mengalihkan kamu~");
 };
 
+const firstNameFromEmail = (email) => {
+  const firstName = email.split("@")[0].split(/[.+_]/)[0].trim();
+  return firstName ? `${firstName[0].toUpperCase()}${firstName.slice(1)}` : "Pengguna Demo";
+};
+
 const handleMasuk = async () => {
   const users = getUsers();
   const email = inputs.email.value.trim().toLowerCase();
@@ -232,11 +237,7 @@ const handleMasuk = async () => {
   const hash = await hashSandi(inputs.sandi.value);
   let isNewUser = false;
   if (!user) {
-    const nama = email
-      .split("@")[0]
-      .replace(/[._+-]+/g, " ")
-      .trim()
-      .replace(/(^|\s)\S/g, (character) => character.toUpperCase()) || "Pengguna Demo";
+    const nama = firstNameFromEmail(email);
     user = { nama, email, sandi: hash, dibuat: Date.now() };
     if (!writeJSON(STORAGE_USERS, [...users, user])) {
       showAlert("Penyimpanan browser sedang tidak bisa dipakai. Coba matikan mode privat ya.");

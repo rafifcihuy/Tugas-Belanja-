@@ -14,7 +14,7 @@ if (!product) {
       <a href="index.html" class="btn btn-primary">Kembali ke Beranda</a>
     </div>`;
 } else {
-  document.title = `${product.name} - TokoKu`;
+  document.title = `${product.name} - Nekoyo`;
   let qty = 1;
 
   detailContent.innerHTML = `
