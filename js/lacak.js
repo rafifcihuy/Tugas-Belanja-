@@ -170,7 +170,6 @@ document.addEventListener("click", (event) => {
 
   if (action === "reset") {
     resetStage(id);
-    showToast("Simulasi diulang dari awal");
   }
 
   render();

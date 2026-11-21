@@ -48,7 +48,14 @@ const profileRules = {
       return "";
     }
   },
-  kota: { required: true, empty: "Silakan pilih kota.", check: () => "" },
+  kota: {
+    required: true,
+    empty: "Silakan pilih kota.",
+    check: (value) => {
+      const cities = Array.from(document.querySelectorAll("#daftarKota option"), (option) => option.value);
+      return cities.includes(value) ? "" : "Pilih kota yang tersedia dari daftar.";
+    }
+  },
   alamat: {
     required: true,
     empty: "Alamat wajib diisi.",
@@ -199,8 +206,7 @@ profileFields.forEach((id) => {
   if (id === "telepon") field.setAttribute("maxlength", "13");
   if (id === "kodepos") field.setAttribute("maxlength", "5");
 
-  const validateOnChange = id === "kota" ? "change" : "input";
-  field.addEventListener(validateOnChange, () => {
+  field.addEventListener("input", () => {
     const value = getFieldValue(id);
     const rule = profileRules[id];
 
@@ -289,6 +295,28 @@ document.getElementById("confirmLogout").addEventListener("click", () => {
   localStorage.removeItem(STORAGE_SESSION);
   sessionStorage.removeItem(STORAGE_SESSION);
   window.location.replace("login.html");
+});
+
+document.getElementById("confirmResetAll").addEventListener("click", () => {
+  const clearAppData = (storage) => {
+    const keys = [];
+    for (let index = 0; index < storage.length; index += 1) {
+      const key = storage.key(index);
+      if (key && key.startsWith("tokoku_")) keys.push(key);
+    }
+    keys.forEach((key) => storage.removeItem(key));
+  };
+  clearAppData(localStorage);
+  clearAppData(sessionStorage);
+  const resetModal = bootstrap.Modal.getInstance(document.getElementById("resetAllModal"));
+  if (resetModal) resetModal.hide();
+  accountContent.hidden = true;
+  document.getElementById("resetComplete").hidden = false;
+  document.documentElement.setAttribute(
+    "data-bs-theme",
+    matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
+  updateBadge(false);
 });
 
 renderHeader();

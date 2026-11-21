@@ -47,38 +47,38 @@
                 </div>
                 <div class="col-md-6">
                   <label for="kota" class="form-label">Kota</label>
-                  <select class="form-select" id="kota" required>
-                    <option value="">Pilih kota</option>
-                    <option>Bandar Lampung</option>
-                    <option>Bandung</option>
-                    <option>Banjarmasin</option>
-                    <option>Batam</option>
-                    <option>Bekasi</option>
-                    <option>Bogor</option>
-                    <option>Denpasar</option>
-                    <option>Depok</option>
-                    <option>Jakarta</option>
-                    <option>Jambi</option>
-                    <option>Jayapura</option>
-                    <option>Makassar</option>
-                    <option>Malang</option>
-                    <option>Manado</option>
-                    <option>Mataram</option>
-                    <option>Medan</option>
-                    <option>Padang</option>
-                    <option>Palembang</option>
-                    <option>Pekanbaru</option>
-                    <option>Pontianak</option>
-                    <option>Samarinda</option>
-                    <option>Semarang</option>
-                    <option>Serang</option>
-                    <option>Surabaya</option>
-                    <option>Surakarta</option>
-                    <option>Tangerang</option>
-                    <option>Tangerang Selatan</option>
-                    <option>Yogyakarta</option>
-                  </select>
-                  <div class="invalid-feedback">Silakan pilih kota.</div>
+                  <input type="text" class="form-control" id="kota" list="daftarKota" autocomplete="address-level2" required placeholder="Ketik untuk mencari kota">
+                  <datalist id="daftarKota">
+                    <option value="Bandar Lampung">
+                    <option value="Bandung">
+                    <option value="Banjarmasin">
+                    <option value="Batam">
+                    <option value="Bekasi">
+                    <option value="Bogor">
+                    <option value="Denpasar">
+                    <option value="Depok">
+                    <option value="Jakarta">
+                    <option value="Jambi">
+                    <option value="Jayapura">
+                    <option value="Makassar">
+                    <option value="Malang">
+                    <option value="Manado">
+                    <option value="Mataram">
+                    <option value="Medan">
+                    <option value="Padang">
+                    <option value="Palembang">
+                    <option value="Pekanbaru">
+                    <option value="Pontianak">
+                    <option value="Samarinda">
+                    <option value="Semarang">
+                    <option value="Serang">
+                    <option value="Surabaya">
+                    <option value="Surakarta">
+                    <option value="Tangerang">
+                    <option value="Tangerang Selatan">
+                    <option value="Yogyakarta">
+                  </datalist>
+                  <div class="invalid-feedback">Pilih kota yang tersedia dari daftar.</div>
                 </div>
                 <div class="col-12">
                   <label for="alamat" class="form-label">Alamat Lengkap</label>
@@ -134,6 +134,16 @@
           </div>
         </div>
 
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h6 class="fw-bold mb-1"><i class="bi bi-arrow-counterclockwise me-2 text-brand"></i>Reset Semua Data</h6>
+            <p class="small text-muted mb-3">Hapus akun dan semua data toko yang tersimpan di browser ini.</p>
+            <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#resetAllModal">
+              <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Semua Data
+            </button>
+          </div>
+        </div>
+
         <div class="card border-0 shadow-sm">
           <div class="card-body">
             <h6 class="fw-bold mb-1"><i class="bi bi-box-arrow-right me-2 text-brand"></i>Keluar dari Akun</h6>
@@ -146,6 +156,32 @@
       </div>
     </div>
   </main>
+
+  <main class="container my-4 page-fade" id="resetComplete" hidden>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center py-5">
+        <div class="profile-complete-icon"><i class="bi bi-check-lg"></i></div>
+        <h4 class="fw-bold">Semua data berhasil direset</h4>
+        <p class="text-muted mb-3">Data toko di browser ini sudah dihapus.</p>
+        <a href="index.html" class="btn btn-primary">Kembali ke Toko</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal fade" id="resetAllModal" tabindex="-1" aria-labelledby="resetAllModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetAllModalLabel">Reset Semua Data?</h5>
+        </div>
+        <div class="modal-body">Akun demo, profil, keranjang, riwayat pesanan, dan pengaturan di browser ini akan dihapus. Tindakan ini tidak dapat dibatalkan.</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" id="confirmResetAll">Reset Semua</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

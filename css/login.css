@@ -123,6 +123,7 @@ button {
   transform: translate(-50%, -62%);
   -webkit-mask-image: linear-gradient(to bottom, #000 74%, transparent 98%);
   mask-image: linear-gradient(to bottom, #000 74%, transparent 98%);
+  animation: lg-sway-desktop 8s ease-in-out infinite;
 }
 
 .char-mobile,
@@ -541,6 +542,20 @@ button {
   50% { transform: translateY(-6px); }
 }
 
+@keyframes lg-sway-desktop {
+  0%, 100% { transform: translate(-50%, -62%) translate(-10px, 0) rotate(-1deg); }
+  25% { transform: translate(-50%, -62%) translate(0, -5px) rotate(0); }
+  50% { transform: translate(-50%, -62%) translate(10px, 0) rotate(1deg); }
+  75% { transform: translate(-50%, -62%) translate(0, -5px) rotate(0); }
+}
+
+@keyframes lg-sway-mobile {
+  0%, 100% { transform: translateX(-50%) translate(-8px, 0) rotate(-1deg); }
+  25% { transform: translateX(-50%) translate(0, -4px) rotate(0); }
+  50% { transform: translateX(-50%) translate(8px, 0) rotate(1deg); }
+  75% { transform: translateX(-50%) translate(0, -4px) rotate(0); }
+}
+
 @keyframes lg-spin {
   to { transform: rotate(360deg); }
 }
@@ -610,6 +625,7 @@ button {
     left: 50%;
     width: 190px;
     transform: translateX(-50%);
+    animation: lg-sway-mobile 8s ease-in-out infinite;
   }
 
   .bubble {
@@ -689,6 +705,8 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .chip,
   .bubble,
+  .char-desktop,
+  .char-mobile,
   .form-wrap,
   .shake {
     animation: none;
