@@ -628,6 +628,11 @@ button {
     animation: lg-sway-mobile 8s ease-in-out infinite;
   }
 
+  .login-panel.mode-daftar .char-mobile {
+    top: 82px;
+    width: 165px;
+  }
+
   .bubble {
     display: block;
     position: absolute;

@@ -13,6 +13,9 @@ const teksKirim = document.getElementById("teksKirim");
 const tombolGanti = document.getElementById("tombolGanti");
 const teksGanti = document.getElementById("teksGanti");
 const toggleSandi = document.getElementById("toggleSandi");
+const loginPanel = document.querySelector(".login-panel");
+const characterDesktop = document.querySelector(".char-desktop");
+const characterMobile = document.querySelector(".char-mobile");
 const inputs = {
   nama: document.getElementById("nama"),
   email: document.getElementById("email"),
@@ -28,7 +31,9 @@ const copy = {
     kirim: "Masuk",
     ganti: "Belum punya akun?",
     tombolGanti: "Daftar yuk",
-    autocomplete: "current-password"
+    autocomplete: "current-password",
+    imageDesktop: "img/4.png",
+    imageMobile: "img/2.png"
   },
   daftar: {
     judul: "Yuk bikin akun dulu~",
@@ -36,7 +41,9 @@ const copy = {
     kirim: "Daftar",
     ganti: "Sudah punya akun?",
     tombolGanti: "Masuk aja",
-    autocomplete: "new-password"
+    autocomplete: "new-password",
+    imageDesktop: "img/6.png",
+    imageMobile: "img/6.png"
   }
 };
 
@@ -145,6 +152,9 @@ const setMode = (next) => {
   tombolGanti.textContent = text.tombolGanti;
   grupNama.hidden = next !== "daftar";
   barisOpsi.classList.toggle("sembunyi", next === "daftar");
+  loginPanel.classList.toggle("mode-daftar", next === "daftar");
+  characterDesktop.src = text.imageDesktop;
+  characterMobile.src = text.imageMobile;
   inputs.sandi.setAttribute("autocomplete", text.autocomplete);
   document.title = next === "daftar" ? "Daftar - TokoKu" : "Masuk - TokoKu";
   Object.keys(inputs).forEach((name) => {
