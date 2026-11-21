@@ -1,11 +1,11 @@
 :root {
-  --brand-dark: #0f5e63;
-  --brand-main: #14808a;
-  --brand-soft: #e6f4f1;
+  --brand-dark: #9c2f5f;
+  --brand-main: #c2417a;
+  --brand-soft: #fbeaf1;
 }
 
 body {
-  background-color: #f6faf9;
+  background-color: var(--bg, #fff7fa);
 }
 
 .text-brand {
@@ -42,7 +42,7 @@ body {
 }
 
 .filter-bar {
-  background-color: #ffffff;
+  background-color: var(--surface, #ffffff);
   border-radius: 0.75rem;
   padding: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
@@ -78,7 +78,7 @@ body {
 
 .product-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 24px rgba(15, 94, 99, 0.18);
+  box-shadow: 0 10px 24px rgba(156, 47, 95, 0.18);
 }
 
 .product-card img {
@@ -102,7 +102,7 @@ body {
 }
 
 .rating-stars {
-  color: #f5a524;
+  color: var(--accent, #ffb86b);
   font-size: 0.85rem;
 }
 
@@ -222,7 +222,7 @@ body {
 .form-control:focus,
 .form-select:focus {
   border-color: var(--brand-main);
-  box-shadow: 0 0 0 0.2rem rgba(20, 128, 138, 0.2);
+  box-shadow: 0 0 0 0.2rem rgba(194, 65, 122, 0.2);
 }
 
 .step-list {
@@ -242,7 +242,7 @@ body {
   left: 10%;
   right: 10%;
   height: 3px;
-  background-color: #d5e3e1;
+  background-color: var(--step-off, #e5d9e7);
 }
 
 .step-item {
@@ -250,7 +250,7 @@ body {
   flex: 1;
   text-align: center;
   font-size: 0.85rem;
-  color: #7a8b89;
+  color: var(--muted, #756b7b);
 }
 
 .step-dot {
@@ -260,7 +260,7 @@ body {
   width: 2.1rem;
   height: 2.1rem;
   border-radius: 50%;
-  background-color: #d5e3e1;
+  background-color: var(--step-off, #e5d9e7);
   color: #ffffff;
   font-weight: 700;
   margin-bottom: 0.3rem;
@@ -284,7 +284,7 @@ body {
 
 .success-icon {
   font-size: 5rem;
-  color: #198754;
+  color: var(--success, #2e9e7e);
   animation: pop 0.5s ease both;
 }
 

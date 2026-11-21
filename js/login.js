@@ -88,10 +88,8 @@ const rules = {
   },
   sandi: (value) => {
     if (!value) return "Kata sandi wajib diisi.";
-    if (mode === "daftar") {
-      if (value.length < 8) return "Kata sandi minimal 8 karakter.";
-      if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) return "Kombinasikan huruf dan angka ya.";
-    }
+    if (value.length < 8) return "Kata sandi minimal 8 karakter.";
+    if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) return "Kombinasikan huruf dan angka ya.";
     return "";
   }
 };
@@ -168,7 +166,7 @@ const startSession = (user, remember) => {
     sessionStorage.removeItem(STORAGE_SESSION);
     (remember ? localStorage : sessionStorage).setItem(STORAGE_SESSION, JSON.stringify(session));
   } catch (error) {
-    return;
+    return false;
   }
   const profile = readJSON(STORAGE_PROFILE_KEY, {});
   writeJSON(STORAGE_PROFILE_KEY, {
@@ -181,6 +179,7 @@ const startSession = (user, remember) => {
     nama: profile.nama || user.nama,
     email: user.email
   });
+  return true;
 };
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -209,28 +208,46 @@ const handleDaftar = async () => {
     showAlert("Penyimpanan browser sedang tidak bisa dipakai. Coba matikan mode privat ya.");
     return;
   }
-  startSession(user, true);
+  if (!startSession(user, true)) {
+    showAlert("Akun berhasil dibuat, tetapi sesi masuk tidak tersimpan. Coba masuk lagi.");
+    return;
+  }
   await finish("Yeay, akun berhasil dibuat! Mengalihkan kamu~");
 };
 
 const handleMasuk = async () => {
   const users = getUsers();
   const email = inputs.email.value.trim().toLowerCase();
-  const user = users.find((item) => item.email === email);
-  if (!user) {
-    setFieldState("email", "Email ini belum terdaftar.");
-    showAlert("Hmm, emailnya belum terdaftar. Yuk daftar dulu~");
-    return;
-  }
+  let user = users.find((item) => item.email === email);
   const hash = await hashSandi(inputs.sandi.value);
-  if (hash !== user.sandi) {
+  let isNewUser = false;
+  if (!user) {
+    const nama = email
+      .split("@")[0]
+      .replace(/[._+-]+/g, " ")
+      .trim()
+      .replace(/(^|\s)\S/g, (character) => character.toUpperCase()) || "Pengguna Demo";
+    user = { nama, email, sandi: hash, dibuat: Date.now() };
+    if (!writeJSON(STORAGE_USERS, [...users, user])) {
+      showAlert("Penyimpanan browser sedang tidak bisa dipakai. Coba matikan mode privat ya.");
+      return;
+    }
+    isNewUser = true;
+  } else if (hash !== user.sandi) {
     setFieldState("sandi", "Kata sandi salah.");
     showAlert("Ups, kata sandinya belum cocok. Coba lagi ya~");
     inputs.sandi.focus();
     return;
   }
-  startSession(user, document.getElementById("ingat").checked);
-  await finish(`Halo lagi, ${user.nama.split(" ")[0]}! Mengalihkan kamu~`);
+  if (!startSession(user, document.getElementById("ingat").checked)) {
+    showAlert("Sesi masuk tidak tersimpan. Periksa penyimpanan browser lalu coba lagi.");
+    return;
+  }
+  await finish(
+    isNewUser
+      ? "Akun demo berhasil dibuat! Mengalihkan kamu~"
+      : `Halo lagi, ${user.nama.split(" ")[0]}! Mengalihkan kamu~`
+  );
 };
 
 form.addEventListener("submit", async (event) => {

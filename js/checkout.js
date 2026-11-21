@@ -1,8 +1,28 @@
+const isLoggedIn = () => {
+  try {
+    const raw = localStorage.getItem("tokoku_session") || sessionStorage.getItem("tokoku_session");
+    const session = raw ? JSON.parse(raw) : null;
+    return Boolean(session && typeof session.email === "string" && session.email.trim());
+  } catch (error) {
+    return false;
+  }
+};
+
 const items = cartDetails();
 
 if (!items.length) {
   window.location.replace("keranjang.html");
+} else if (!isLoggedIn()) {
+  const checkoutContent = document.getElementById("checkoutContent");
+  checkoutContent.hidden = false;
+  checkoutContent.classList.add("checkout-login-required");
+  document.getElementById("checkoutFormContent").hidden = true;
+  document.getElementById("checkoutLoginNotice").hidden = false;
 } else {
+  document.getElementById("checkoutContent").hidden = false;
+  document.getElementById("steps").hidden = false;
+  document.getElementById("checkoutTitle").hidden = false;
+  document.getElementById("checkoutFormContent").hidden = false;
   document.getElementById("steps").innerHTML = renderSteps(2);
 
   const form = document.getElementById("checkoutForm");
@@ -226,7 +246,7 @@ if (!items.length) {
       },
       shippingLabel: shippingType === "reguler" ? "Reguler (3 sampai 5 hari)" : "Express (1 sampai 2 hari)",
       payment: document.getElementById("pembayaran").value,
-      items: items.map((item) => ({ name: item.name, qty: item.qty, price: item.price })),
+      items: items.map((item) => ({ id: item.id, name: item.name, qty: item.qty, price: item.price })),
       subtotal,
       discount,
       shipping,

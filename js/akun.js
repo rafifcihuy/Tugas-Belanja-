@@ -1,6 +1,27 @@
+const STORAGE_SESSION = "tokoku_session";
+
+const readSession = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_SESSION) || sessionStorage.getItem(STORAGE_SESSION);
+    const session = raw ? JSON.parse(raw) : null;
+    return session && typeof session.email === "string" && session.email.trim() ? session : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const session = readSession();
+
+if (!session) {
+  window.location.replace("login.html?next=akun.html");
+}
+
+const accountContent = document.getElementById("accountContent");
+accountContent.hidden = !session;
 syncLastOrder();
 
 const STORAGE_PROFILE = "tokoku_profile";
+const STORAGE_PROFILE_COMPLETE_DISMISSED = "tokoku_profile_complete_dismissed";
 const emptyProfile = { nama: "", email: "", telepon: "", alamat: "", kota: "", kodepos: "" };
 const profileFields = ["nama", "email", "telepon", "kota", "alamat", "kodepos"];
 const profileRules = {
@@ -12,34 +33,50 @@ const profileRules = {
     check: (value) => (value.length < 3 ? "Nama minimal 3 karakter." : "")
   },
   email: {
+    required: true,
+    empty: "Email wajib diisi.",
     check: (value, field) => (field.validity.typeMismatch ? "Format email belum benar." : "")
   },
   telepon: {
+    required: true,
+    empty: "Nomor telepon wajib diisi.",
     chars: /^[0-9]+$/,
     charMsg: "Nomor telepon hanya boleh berisi angka, tanpa spasi atau tanda hubung.",
     check: (value) => {
-      if (!value) return "";
       if (!value.startsWith("08")) return "Nomor telepon harus diawali 08.";
       if (value.length < 10 || value.length > 13) return "Nomor telepon harus 10 sampai 13 digit.";
       return "";
     }
   },
-  kota: { check: () => "" },
+  kota: { required: true, empty: "Silakan pilih kota.", check: () => "" },
   alamat: {
-    check: (value) => (value && value.length < 10 ? "Alamat minimal 10 karakter agar kurir mudah menemukan lokasi." : "")
+    required: true,
+    empty: "Alamat wajib diisi.",
+    check: (value) => (value.length < 10 ? "Alamat minimal 10 karakter agar kurir mudah menemukan lokasi." : "")
   },
   kodepos: {
+    required: true,
+    empty: "Kode pos wajib diisi.",
     chars: /^[0-9]+$/,
     charMsg: "Kode pos hanya boleh berisi angka.",
-    check: (value) => (value && value.length !== 5 ? "Kode pos harus 5 digit angka." : "")
+    check: (value) => (value.length !== 5 ? "Kode pos harus 5 digit angka." : "")
   }
 };
 
-const getProfile = () => ({ ...emptyProfile, ...readJSON(STORAGE_PROFILE, {}) });
+const getProfile = () => {
+  const profile = readJSON(STORAGE_PROFILE, {});
+  return {
+    ...emptyProfile,
+    ...profile,
+    nama: profile.nama || (session && session.nama) || "",
+    email: (session && session.email) || ""
+  };
+};
 
 const akunHeader = document.getElementById("akunHeader");
 const recentOrders = document.getElementById("recentOrders");
 const profileForm = document.getElementById("profileForm");
+const profileComplete = document.getElementById("profileComplete");
 
 const initialOf = (name) => (name.trim() ? name.trim().charAt(0).toUpperCase() : "T");
 
@@ -101,6 +138,9 @@ const fillForm = () => {
   profileFields.forEach((id) => {
     document.getElementById(id).value = profile[id];
   });
+  const isComplete = profileFields.every((id) => Boolean(String(profile[id] || "").trim()));
+  profileForm.hidden = isComplete;
+  profileComplete.hidden = !isComplete || readJSON(STORAGE_PROFILE_COMPLETE_DISMISSED, false) === true;
 };
 
 const touchedFields = new Set();
@@ -203,9 +243,15 @@ profileForm.addEventListener("submit", (event) => {
     profile[id] = document.getElementById(id).value.trim();
   });
   writeJSON(STORAGE_PROFILE, profile);
-  writeJSON(STORAGE_PROFILE, profile);
   renderHeader();
-  showToast("Data akun berhasil disimpan");
+  profileForm.hidden = true;
+  localStorage.removeItem(STORAGE_PROFILE_COMPLETE_DISMISSED);
+  profileComplete.hidden = false;
+});
+
+document.getElementById("startShopping").addEventListener("click", () => {
+  writeJSON(STORAGE_PROFILE_COMPLETE_DISMISSED, true);
+  profileComplete.hidden = true;
 });
 
 const setTheme = (mode) => {
@@ -239,13 +285,10 @@ themeRadios.forEach((radio) => {
   });
 });
 
-document.getElementById("resetData").addEventListener("click", () => {
-  if (!confirm("Semua data toko di perangkat ini (profil, keranjang, riwayat pesanan, tema) akan dihapus. Lanjutkan?")) return;
-  Object.keys(localStorage)
-    .filter((key) => key.startsWith("tokoku_"))
-    .forEach((key) => localStorage.removeItem(key));
-  showToast("Semua data berhasil dihapus");
-  setTimeout(() => window.location.reload(), 900);
+document.getElementById("confirmLogout").addEventListener("click", () => {
+  localStorage.removeItem(STORAGE_SESSION);
+  sessionStorage.removeItem(STORAGE_SESSION);
+  window.location.replace("login.html");
 });
 
 renderHeader();

@@ -341,6 +341,7 @@ const renderNavbar = () => {
 
   if (["lacak", "keranjang", "akun", "checkout", "sukses"].includes(page)) {
     renderBottomNav();
+    updateBadge(false);
     return;
   }
 

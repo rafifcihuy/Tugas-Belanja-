@@ -13,6 +13,31 @@
   box-shadow: 0 0 0 5px var(--brand-soft);
 }
 
+.profile-complete-box {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--surface);
+  text-align: center;
+}
+
+.profile-complete-box[hidden] {
+  display: none;
+}
+
+.profile-complete-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--brand-soft);
+  color: var(--brand-main);
+  font-size: 1.5rem;
+}
+
 .stat-box {
   background-color: var(--brand-soft);
   border-radius: 14px;
@@ -44,27 +69,27 @@
 }
 
 .recent-order.belum {
-  background-color: #fff4d6;
-  border-color: #f5d98d;
-  color: #7a5600;
+  background-color: var(--warning-soft);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
 }
 
 .recent-order.sudah {
-  background-color: #d9f2e3;
-  border-color: #a7dfbd;
-  color: #14532d;
+  background-color: var(--success-soft);
+  border-color: var(--success-border);
+  color: var(--success-text);
 }
 
 [data-bs-theme="dark"] .recent-order.belum {
-  background-color: rgba(245, 158, 11, 0.16);
-  border-color: rgba(245, 158, 11, 0.4);
-  color: #fcd34d;
+  background-color: var(--warning-soft);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
 }
 
 [data-bs-theme="dark"] .recent-order.sudah {
-  background-color: rgba(34, 197, 94, 0.16);
-  border-color: rgba(34, 197, 94, 0.4);
-  color: #86efac;
+  background-color: var(--success-soft);
+  border-color: var(--success-border);
+  color: var(--success-text);
 }
 
 .recent-order:last-child {

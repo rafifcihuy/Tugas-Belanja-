@@ -82,13 +82,16 @@ if (!order) {
   const dateText = new Date(order.date).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" });
 
   const rows = order.items
-    .map(
-      (item) => `
-      <div class="d-flex justify-content-between mb-2">
-        <span>${escapeHTML(item.name)} <small class="text-muted">x ${item.qty}</small></span>
-        <span>${formatRupiah(item.price * item.qty)}</span>
-      </div>`
-    )
+    .map((item) => {
+      const product = products.find((candidate) => candidate.id === Number(item.id) || candidate.name === item.name);
+      const image = product ? product.image : "img/logo-ikon.svg";
+      return `
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <img src="${image}" alt="" width="52" height="52" class="rounded flex-shrink-0" style="object-fit: cover;">
+          <span class="flex-grow-1">${escapeHTML(item.name)} <small class="text-muted">x ${item.qty}</small></span>
+          <span>${formatRupiah(item.price * item.qty)}</span>
+        </div>`;
+    })
     .join("");
 
   successContent.innerHTML = `
@@ -127,8 +130,8 @@ if (!order) {
       </div>
     </div>
 
-    <div class="text-center mt-4">
-            <a href="lacak.html?id=${order.id}" class="btn btn-primary btn-lg me-2"><i class="bi bi-truck me-1"></i>Lacak Pesanan</a><br class="d-lg-none mb-2">
+    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mt-4">
+      <a href="lacak.html?id=${order.id}" class="btn btn-primary btn-lg"><i class="bi bi-truck me-1"></i>Lacak Pesanan</a>
       <a href="index.html" class="btn btn-outline-primary btn-lg">Kembali Belanja</a>
     </div>`;
 

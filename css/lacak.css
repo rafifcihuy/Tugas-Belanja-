@@ -1,3 +1,15 @@
+body[data-page="lacak"] {
+  --bs-warning: #ffc107;
+  --bs-warning-rgb: 255, 193, 7;
+  --warning-soft: #fff4d6;
+  --warning-text: #7a5600;
+}
+
+[data-bs-theme="dark"] body[data-page="lacak"] {
+  --warning-soft: rgba(245, 158, 11, 0.16);
+  --warning-text: #fcd34d;
+}
+
 .track-search {
   max-width: 520px;
 }
@@ -18,7 +30,7 @@
 
 .order-item:hover {
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(15, 94, 99, 0.15);
+  box-shadow: 0 4px 12px rgba(156, 47, 95, 0.15);
 }
 
 .order-item.active {
@@ -39,13 +51,13 @@
 }
 
 .track-status.belum {
-  background-color: #fff4d6;
-  color: #7a5600;
+  background-color: var(--warning-soft);
+  color: var(--warning-text);
 }
 
 .track-status.sudah {
-  background-color: #d9f2e3;
-  color: #14532d;
+  background-color: var(--success-soft);
+  color: var(--success-text);
 }
 
 .track-timeline {
@@ -71,7 +83,7 @@
   top: 2.4rem;
   bottom: 0;
   width: 3px;
-  background-color: #d5e3e1;
+  background-color: var(--step-off);
 }
 
 .track-item:last-child::before {
@@ -92,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #d5e3e1;
+  background-color: var(--step-off);
   color: #ffffff;
 }
 
@@ -106,10 +118,10 @@
 }
 
 .track-item.pending .track-title {
-  color: #8a9a98;
+  color: var(--muted);
 }
 
 @keyframes pulseRing {
-  0% { box-shadow: 0 0 0 0 rgba(20, 128, 138, 0.5); }
-  100% { box-shadow: 0 0 0 14px rgba(20, 128, 138, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(194, 65, 122, 0.5); }
+  100% { box-shadow: 0 0 0 14px rgba(194, 65, 122, 0); }
 }
