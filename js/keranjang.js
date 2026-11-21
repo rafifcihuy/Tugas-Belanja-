@@ -4,6 +4,7 @@ const removeItemModal = new bootstrap.Modal(document.getElementById("removeItemM
 const removeItemModalMessage = document.getElementById("removeItemModalMessage");
 const confirmRemoveItemButton = document.getElementById("confirmRemoveItem");
 let pendingRemoveId = null;
+let animateVoucherCheck = false;
 
 const renderCart = () => {
   const items = cartDetails();
@@ -56,8 +57,9 @@ const renderCart = () => {
     .join("");
 
   const voucherInfo = voucher
-    ? `<div class="alert alert-success py-2 d-flex justify-content-between align-items-center mb-3">
-         <span><i class="bi bi-tag-fill me-1"></i>${voucher} dipakai</span>
+    ? `<div class="alert alert-success voucher-success-alert py-2 d-flex align-items-center gap-2 mb-3" role="status" aria-live="polite">
+         <span class="voucher-success-check ${animateVoucherCheck ? "is-animated" : ""}" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+         <span class="flex-grow-1"><strong class="d-block">Voucher sudah terpakai</strong><small>${voucher}</small></span>
          <button type="button" class="btn btn-sm btn-link text-danger p-0" data-action="removeVoucher">Lepas</button>
        </div>`
     : `<form id="voucherForm" class="input-group mb-3">
@@ -92,6 +94,7 @@ const renderCart = () => {
         </div>
       </div>
     </div>`;
+  animateVoucherCheck = false;
 };
 
 content.addEventListener("click", (event) => {
@@ -153,7 +156,7 @@ content.addEventListener("submit", (event) => {
   event.preventDefault();
   const code = document.getElementById("voucherInput").value;
   if (applyVoucher(code)) {
-    showToast("Voucher berhasil dipakai");
+    animateVoucherCheck = true;
     renderCart();
   } else {
     showToast("Kode voucher tidak valid", "danger");

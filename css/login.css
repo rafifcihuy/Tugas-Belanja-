@@ -529,6 +529,63 @@ button {
   border-color: rgba(194, 65, 122, 0.3);
 }
 
+.google-demo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(43, 36, 51, 0.58);
+  backdrop-filter: blur(4px);
+}
+
+.google-demo-overlay[hidden] {
+  display: none;
+}
+
+.google-demo-dialog {
+  width: min(100%, 390px);
+  padding: 24px;
+  border: 1px solid var(--lg-line);
+  border-radius: 24px;
+  background: var(--lg-surface);
+  color: var(--lg-ink);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
+  animation: lg-rise 0.3s ease both;
+}
+
+.google-demo-dialog img {
+  display: block;
+  width: min(180px, 65%);
+  height: 160px;
+  object-fit: contain;
+  margin: 0 auto 16px;
+}
+
+.google-demo-dialog h2 {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.google-demo-dialog p {
+  margin-bottom: 16px;
+  color: var(--lg-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.google-demo-close {
+  width: 100%;
+}
+
+body.google-demo-open {
+  overflow: hidden;
+}
+
 .shake {
   animation: lg-shake 0.4s;
 }
@@ -629,8 +686,8 @@ button {
   }
 
   .login-panel.mode-daftar .char-mobile {
-    top: 82px;
-    width: 165px;
+    top: 105px;
+    width: 190px;
   }
 
   .bubble {
@@ -712,6 +769,7 @@ button {
   .bubble,
   .char-desktop,
   .char-mobile,
+  .google-demo-dialog,
   .form-wrap,
   .shake {
     animation: none;

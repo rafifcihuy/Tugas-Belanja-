@@ -306,8 +306,26 @@ document.getElementById("lupaSandi").addEventListener("click", () => {
   showAlert("Fitur atur ulang kata sandi belum tersedia di versi demo ini. Kamu bisa daftar dengan email baru.", "info");
 });
 
-document.getElementById("tombolGoogle").addEventListener("click", () => {
-  showAlert("Login dengan Google belum tersedia di versi demo ini ya~", "info");
+const googleDemoModal = document.getElementById("googleDemoModal");
+const closeGoogleDemo = document.getElementById("closeGoogleDemo");
+const openGoogleDemo = () => {
+  googleDemoModal.hidden = false;
+  document.body.classList.add("google-demo-open");
+  closeGoogleDemo.focus();
+};
+const hideGoogleDemo = () => {
+  googleDemoModal.hidden = true;
+  document.body.classList.remove("google-demo-open");
+  document.getElementById("tombolGoogle").focus();
+};
+
+document.getElementById("tombolGoogle").addEventListener("click", openGoogleDemo);
+closeGoogleDemo.addEventListener("click", hideGoogleDemo);
+googleDemoModal.addEventListener("click", (event) => {
+  if (event.target === googleDemoModal) hideGoogleDemo();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !googleDemoModal.hidden) hideGoogleDemo();
 });
 
 const sudahMasuk = () => {

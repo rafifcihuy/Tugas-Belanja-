@@ -241,6 +241,28 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 2rem;
 }
 
+.voucher-success-check {
+  display: inline-flex;
+  flex: 0 0 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--success);
+  color: #fff;
+}
+
+.voucher-success-check.is-animated {
+  animation: voucher-check-pop 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes voucher-check-pop {
+  0% { opacity: 0; transform: scale(0.3); }
+  70% { opacity: 1; transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
 .btn-link {
   --bs-btn-color: var(--price);
 }
