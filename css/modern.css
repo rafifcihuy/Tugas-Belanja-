@@ -458,9 +458,47 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .product-card {
+  position: relative;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+}
+
+.favorite-toggle {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 2;
+  display: inline-flex;
+  width: 2.4rem;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--surface);
+  color: var(--muted);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  font-size: 1.15rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.favorite-toggle:hover,
+.favorite-toggle.active {
+  color: var(--brand-main);
+}
+
+.favorite-toggle:hover {
+  transform: scale(1.08);
+}
+
+.favorite-toggle:focus-visible {
+  outline: 3px solid var(--brand-main);
+  outline-offset: 2px;
+}
+
+#detailFavorite .favorite-toggle {
+  position: static;
 }
 
 .product-card:hover {

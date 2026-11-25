@@ -55,8 +55,11 @@ if (!product) {
           </button>
           <button class="btn btn-primary btn-lg flex-fill" type="button" id="buyButton">Beli Sekarang</button>
         </div>
+        <div class="mt-3" id="detailFavorite">${favoriteButton(product.id)}</div>
       </div>
     </div>`;
+
+  bindFavoriteButtons(document.getElementById("detailFavorite"));
 
   const qtyValue = document.getElementById("qtyValue");
 
@@ -93,6 +96,7 @@ if (!product) {
         (item) => `
         <div class="col-6 col-md-3">
           <div class="card product-card h-100 shadow-sm">
+            ${favoriteButton(item.id)}
             <a href="produk.html?id=${item.id}">
               <img src="${item.image}" class="card-img-top" alt="${item.name}" loading="lazy">
             </a>
@@ -106,5 +110,6 @@ if (!product) {
         </div>`
       )
       .join("");
+    bindFavoriteButtons(relatedGrid);
   }
 }

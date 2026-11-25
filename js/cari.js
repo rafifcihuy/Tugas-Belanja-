@@ -31,6 +31,7 @@ const render = () => {
       (item) => `
       <div class="col-6 col-md-4 col-lg-3">
         <div class="card product-card h-100 shadow-sm">
+          ${favoriteButton(item.id)}
           <a href="produk.html?id=${item.id}">
             <img src="${item.image}" class="card-img-top" alt="${item.name}" loading="lazy">
           </a>
@@ -95,5 +96,7 @@ productGrid.addEventListener("click", (event) => {
   if (!button) return;
   addToCartWithEffect(button.dataset.id, 1, button);
 });
+
+bindFavoriteButtons(productGrid);
 
 render();

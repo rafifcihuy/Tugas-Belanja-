@@ -1,4 +1,5 @@
 const STORAGE_CART = "tokoku_cart";
+const STORAGE_FAVORITES = "tokoku_favorites";
 const STORAGE_VOUCHER = "tokoku_voucher";
 const STORAGE_ORDER = "tokoku_last_order";
 const VOUCHERS = { HEMAT10: 0.1, PROMO5: 0.05 };
@@ -23,6 +24,66 @@ const readJSON = (key, fallback) => {
 const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 
 const findProduct = (id) => products.find((item) => item.id === Number(id));
+
+const getFavorites = () => {
+  const favorites = readJSON(STORAGE_FAVORITES, []);
+  return Array.isArray(favorites)
+    ? [...new Set(favorites.map(Number).filter((id) => findProduct(id)))]
+    : [];
+};
+
+const isFavorite = (id) => getFavorites().includes(Number(id));
+
+const favoriteButton = (id) => {
+  const active = isFavorite(id);
+  const label = active ? "Hapus dari favorit" : "Tambahkan ke favorit";
+  return `
+    <button class="favorite-toggle${active ? " active" : ""}" type="button" data-id="${id}" aria-label="${label}" aria-pressed="${active}" title="${label}">
+      <i class="bi ${active ? "bi-heart-fill" : "bi-heart"}" aria-hidden="true"></i>
+    </button>`;
+};
+
+const syncFavoriteButtons = (root = document) => {
+  root.querySelectorAll(".favorite-toggle").forEach((button) => {
+    const active = isFavorite(button.dataset.id);
+    const label = active ? "Hapus dari favorit" : "Tambahkan ke favorit";
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-label", label);
+    button.setAttribute("aria-pressed", String(active));
+    button.title = label;
+    button.firstElementChild.className = `bi ${active ? "bi-heart-fill" : "bi-heart"}`;
+  });
+};
+
+const toggleFavorite = (id) => {
+  const product = findProduct(id);
+  if (!product) throw new Error("Produk tidak ditemukan");
+  const favorites = getFavorites();
+  const active = favorites.includes(product.id);
+  const nextFavorites = active
+    ? favorites.filter((favoriteId) => favoriteId !== product.id)
+    : [...favorites, product.id];
+  writeJSON(STORAGE_FAVORITES, nextFavorites);
+  syncFavoriteButtons();
+  return !active;
+};
+
+const bindFavoriteButtons = (container, onChange) => {
+  container.addEventListener("click", (event) => {
+    const button = event.target.closest(".favorite-toggle");
+    if (!button) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    try {
+      const active = toggleFavorite(button.dataset.id);
+      showToast(active ? "Produk ditambahkan ke favorit" : "Produk dihapus dari favorit");
+      if (onChange) onChange();
+    } catch (error) {
+      showToast("Favorit tidak dapat disimpan. Silakan coba lagi.", "danger");
+    }
+  });
+};
 
 const getCart = () => readJSON(STORAGE_CART, []);
 

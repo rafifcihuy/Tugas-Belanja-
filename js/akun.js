@@ -208,9 +208,14 @@ const renderHeader = () => {
         <h5 class="fw-bold mb-0">${escapeHTML(profile.nama || "Pengguna Nekoyo")}</h5>
         <small class="text-muted">${escapeHTML(profile.email || "Lengkapi data diri Anda di bawah")}</small>
       </div>
-      <button type="button" class="btn btn-outline-primary btn-sm flex-shrink-0" id="editAccountSettings" aria-label="Pengaturan akun" aria-controls="profileForm" aria-expanded="false">
-        <i class="bi bi-gear-fill"></i><span class="d-none d-sm-inline ms-1">Pengaturan</span>
-      </button>
+      <div class="d-flex gap-2 flex-shrink-0">
+        <a href="favorit.html" class="btn btn-outline-primary btn-sm" aria-label="Produk favorit">
+          <i class="bi bi-heart"></i><span class="d-none d-sm-inline ms-1">Favorit</span>
+        </a>
+        <button type="button" class="btn btn-outline-primary btn-sm" id="editAccountSettings" aria-label="Pengaturan akun" aria-controls="profileForm" aria-expanded="false">
+          <i class="bi bi-gear-fill"></i><span class="d-none d-sm-inline ms-1">Pengaturan</span>
+        </button>
+      </div>
     </div>
     <div class="row g-2 g-md-3 mt-2 text-center">
       <div class="col-4"><div class="stat-box"><div class="stat-value">${orders.length}</div><small>Pesanan</small></div></div>
