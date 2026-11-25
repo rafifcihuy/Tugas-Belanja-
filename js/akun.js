@@ -209,9 +209,6 @@ const renderHeader = () => {
         <small class="text-muted">${escapeHTML(profile.email || "Lengkapi data diri Anda di bawah")}</small>
       </div>
       <div class="d-flex gap-2 flex-shrink-0">
-        <a href="favorit.html" class="btn btn-outline-primary btn-sm" aria-label="Produk favorit">
-          <i class="bi bi-heart"></i><span class="d-none d-sm-inline ms-1">Favorit</span>
-        </a>
         <button type="button" class="btn btn-outline-primary btn-sm" id="editAccountSettings" aria-label="Pengaturan akun" aria-controls="profileForm" aria-expanded="false">
           <i class="bi bi-gear-fill"></i><span class="d-none d-sm-inline ms-1">Pengaturan</span>
         </button>
@@ -450,37 +447,6 @@ profileForm.addEventListener("submit", async (event) => {
 document.getElementById("startShopping").addEventListener("click", () => {
   writeJSON(STORAGE_PROFILE_COMPLETE_DISMISSED, true);
   profileComplete.hidden = true;
-});
-
-const setTheme = (mode) => {
-  const dark = mode === "dark" || (mode === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
-  document.documentElement.setAttribute("data-bs-theme", dark ? "dark" : "light");
-  try {
-    if (mode === "auto") {
-      localStorage.removeItem(STORAGE_THEME);
-    } else {
-      localStorage.setItem(STORAGE_THEME, mode);
-    }
-  } catch (error) {
-    return;
-  }
-};
-
-const readSavedTheme = () => {
-  try {
-    return localStorage.getItem(STORAGE_THEME) || "auto";
-  } catch (error) {
-    return "auto";
-  }
-};
-
-const themeRadios = document.querySelectorAll('input[name="tema"]');
-
-themeRadios.forEach((radio) => {
-  radio.checked = radio.value === readSavedTheme();
-  radio.addEventListener("change", () => {
-    setTheme(radio.value);
-  });
 });
 
 document.getElementById("confirmLogout").addEventListener("click", () => {

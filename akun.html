@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="css/modern.css" rel="stylesheet">
   <link href="css/akun.css" rel="stylesheet">
+  <link href="css/akun-favorit.css" rel="stylesheet">
+  <link href="css/tampilan.css" rel="stylesheet">
   <script>try{var t=localStorage.getItem("tokoku_theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-bs-theme",t)}catch(e){}</script>
 </head>
 <body data-page="akun">
@@ -142,19 +144,11 @@
       <div class="col-lg-5">
         <div class="card border-0 shadow-sm mb-4">
           <div class="card-body">
-            <h6 class="fw-bold mb-3"><i class="bi bi-palette-fill me-2 text-brand"></i>Tampilan</h6>
-            <div class="form-check option-box mb-2">
-              <input class="form-check-input" type="radio" name="tema" id="temaLight" value="light">
-              <label class="form-check-label w-100" for="temaLight"><i class="bi bi-sun-fill me-2"></i>Terang</label>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold mb-0"><i class="bi bi-heart-fill me-2 text-brand"></i>Favorit Saya <span class="text-muted fw-normal" id="favoriteTotal"></span></h6>
+              <a href="favorit.html" class="small text-decoration-none">Lihat semua</a>
             </div>
-            <div class="form-check option-box mb-2">
-              <input class="form-check-input" type="radio" name="tema" id="temaDark" value="dark">
-              <label class="form-check-label w-100" for="temaDark"><i class="bi bi-moon-stars-fill me-2"></i>Gelap</label>
-            </div>
-            <div class="form-check option-box">
-              <input class="form-check-input" type="radio" name="tema" id="temaAuto" value="auto">
-              <label class="form-check-label w-100" for="temaAuto"><i class="bi bi-circle-half me-2"></i>Otomatis <small class="text-muted">(ikut pengaturan perangkat)</small></label>
-            </div>
+            <div id="recentFavorites"></div>
           </div>
         </div>
 
@@ -165,6 +159,22 @@
               <a href="lacak.html" class="small text-decoration-none">Lihat semua</a>
             </div>
             <div id="recentOrders"></div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <label class="menu-switch" for="temaSwitch">
+              <span class="menu-icon"><i class="bi bi-moon-stars-fill" id="temaIcon"></i></span>
+              <span class="menu-text">
+                <span class="menu-title">Mode Gelap</span>
+                <small class="menu-sub" id="temaStatus">Nonaktif</small>
+              </span>
+              <span class="switch">
+                <input type="checkbox" id="temaSwitch" role="switch" aria-label="Mode gelap">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </span>
+            </label>
           </div>
         </div>
 
@@ -239,5 +249,7 @@
   <script src="js/common.js"></script>
   <script src="js/pesanan.js"></script>
   <script src="js/akun.js"></script>
+  <script src="js/akun-favorit.js"></script>
+  <script src="js/tampilan.js"></script>
 </body>
 </html>

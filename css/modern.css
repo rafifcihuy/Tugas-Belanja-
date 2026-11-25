@@ -241,6 +241,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 2rem;
 }
 
+.cart-added-check.favorite-added-heart {
+  background-color: var(--brand-soft);
+  color: var(--brand-main);
+}
+
 .voucher-success-check {
   display: inline-flex;
   flex: 0 0 2rem;

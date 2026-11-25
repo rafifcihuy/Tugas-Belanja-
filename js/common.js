@@ -77,7 +77,8 @@ const bindFavoriteButtons = (container, onChange) => {
 
     try {
       const active = toggleFavorite(button.dataset.id);
-      showToast(active ? "Produk ditambahkan ke favorit" : "Produk dihapus dari favorit");
+      if (active) showFavoriteAddedConfirmation();
+      else showToast("Produk dihapus dari favorit");
       if (onChange) onChange();
     } catch (error) {
       showToast("Favorit tidak dapat disimpan. Silakan coba lagi.", "danger");
@@ -237,27 +238,31 @@ const addToCart = (id, qty = 1) => {
   return { ok: true, message: `${product.name} berhasil ditambahkan ke keranjang` };
 };
 
-let cartAddedModal;
-let cartAddedModalTimer;
+let actionConfirmationModal;
+let actionConfirmationTimer;
+let actionConfirmationIcon;
+let actionConfirmationLabel;
 
-const showAddedToCartConfirmation = () => {
-  if (!cartAddedModal) {
+const showActionConfirmation = (message, icon, variant = "cart") => {
+  if (!actionConfirmationModal) {
     const modalElement = document.createElement("div");
     modalElement.className = "modal fade cart-added-modal";
     modalElement.tabIndex = -1;
-    modalElement.setAttribute("aria-labelledby", "cartAddedModalLabel");
+    modalElement.setAttribute("aria-labelledby", "actionConfirmationLabel");
     modalElement.setAttribute("aria-hidden", "true");
     modalElement.innerHTML = `
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content text-center">
           <div class="modal-body py-4">
-            <div class="cart-added-check" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
-            <h5 class="fw-bold mt-3 mb-0" id="cartAddedModalLabel">Produk dimasukkan ke keranjang</h5>
+            <div class="cart-added-check" id="actionConfirmationIcon" aria-hidden="true"><i></i></div>
+            <h5 class="fw-bold mt-3 mb-0" id="actionConfirmationLabel"></h5>
           </div>
         </div>
       </div>`;
     document.body.appendChild(modalElement);
-    cartAddedModal = new bootstrap.Modal(modalElement);
+    actionConfirmationIcon = modalElement.querySelector("#actionConfirmationIcon");
+    actionConfirmationLabel = modalElement.querySelector("#actionConfirmationLabel");
+    actionConfirmationModal = new bootstrap.Modal(modalElement);
     modalElement.addEventListener("show.bs.modal", () => {
       document.body.classList.add("cart-added-notice-active");
     });
@@ -266,10 +271,19 @@ const showAddedToCartConfirmation = () => {
     });
   }
 
-  cartAddedModal.show();
-  clearTimeout(cartAddedModalTimer);
-  cartAddedModalTimer = setTimeout(() => cartAddedModal.hide(), 1000);
+  actionConfirmationLabel.textContent = message;
+  actionConfirmationIcon.firstElementChild.className = `bi ${icon}`;
+  actionConfirmationIcon.classList.toggle("favorite-added-heart", variant === "favorite");
+  actionConfirmationModal.show();
+  clearTimeout(actionConfirmationTimer);
+  actionConfirmationTimer = setTimeout(() => actionConfirmationModal.hide(), 1000);
 };
+
+const showAddedToCartConfirmation = () =>
+  showActionConfirmation("Produk dimasukkan ke keranjang", "bi-check-lg");
+
+const showFavoriteAddedConfirmation = () =>
+  showActionConfirmation("Produk ditambahkan ke favorit", "bi-heart-fill", "favorite");
 
 const setQty = (id, qty) => {
   const product = findProduct(id);

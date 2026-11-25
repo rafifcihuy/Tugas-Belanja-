@@ -1,0 +1,99 @@
+.fav-preview {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 8px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fav-mini {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc((100% - 20px) / 3);
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.fav-mini:hover {
+  border-color: var(--brand-main);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.fav-mini:active {
+  transform: scale(0.97);
+}
+
+.fav-mini:focus-visible {
+  outline: 3px solid var(--brand-main);
+  outline-offset: 2px;
+}
+
+.fav-mini-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--brand-soft);
+}
+
+.fav-mini-body {
+  padding: 8px 10px 10px;
+  min-width: 0;
+}
+
+.fav-mini-name {
+  display: block;
+  overflow: hidden;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fav-mini-price {
+  display: block;
+  margin-top: 2px;
+  color: var(--price);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.fav-more {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.fav-more:hover {
+  color: var(--brand-main);
+}
+
+.fav-preview::-webkit-scrollbar {
+  height: 5px;
+}
+
+.fav-preview::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fav-mini {
+    transition: none;
+  }
+}

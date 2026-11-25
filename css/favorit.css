@@ -1,0 +1,82 @@
+.fav-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 1.25rem;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.fav-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fav-tile {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--brand-soft);
+  color: var(--brand-main);
+  font-size: 1.4rem;
+}
+
+.fav-add-all[hidden] {
+  display: none;
+}
+
+@media (max-width: 575.98px) {
+  .fav-add-all {
+    width: 100%;
+  }
+}
+
+.fav-item {
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.fav-item.removing {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+}
+
+.favorite-toggle {
+  transition: color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.favorite-toggle:active {
+  transform: scale(0.82);
+}
+
+.favorite-toggle.active {
+  background-color: var(--brand-soft);
+  color: var(--brand-main);
+}
+
+.toast-undo {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.toast-undo:disabled {
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fav-item,
+  .favorite-toggle {
+    transition: none;
+  }
+}
